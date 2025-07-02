@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Complaint View - Barangay Market Area</title>
+  <link rel="icon" type="image/png" href="files/logo.png">
+
+  <style>
+    /* Base Reset and Font */
+    * {
+      margin: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      font-family: Arial, sans-serif;
+      height: 100%;
+      overflow-x: hidden;
+    }
+
+    /* Background Image + Overlay */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('files/marketareabg.jpg') no-repeat center center;
+      background-size: cover;
+      background-attachment: fixed;
+      z-index: -2;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: -1;
+    }
+
+    /* Sticky Header */
+    header {
+      position: sticky;
+      top: 0;
+      background-color: #2e3b0d;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 30px;
+      z-index: 1000;
+    }
+
+    header img {
+      height: 60px;
+      margin-right: 10px;
+    }
+
+    header nav {
+      display: flex;
+      align-items: center;
+    }
+
+    header nav a {
+      color: white;
+      text-decoration: none;
+      cursor: pointer;
+      padding: 8px 16px;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+    }
+
+    header nav a:hover {
+      background-color: rgba(255,255,255,0.1);
+    }
+
+    .profile-container {
+      position: relative;
+    }
+
+    .profile-circle {
+      background: #ccc;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      margin-left: 10px;    
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 40px;
+      background-color: white;
+      color: black;
+      min-width: 170px;
+      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+      z-index: 10;
+      border-radius: 4px;
+    }
+
+    .dropdown-menu a {
+      color: black;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      gap: 10px;
+    }
+
+    .dropdown-menu a:hover {
+      background-color: #f1f1f1;
+    }
+
+    .dropdown-menu a img {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* Complaint Form Styling */
+    .form-container {
+      max-width: 1000px;
+      margin: 50px auto;
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 40px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .form-container p {
+      margin-bottom: 12px;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+
+    .photo {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border: 1px solid #aaa;
+    }
+
+    .info {
+      flex: 1;
+    }
+
+    .section {
+      margin-top: 30px;
+      border-top: 1px solid #aaa;
+      padding-top: 20px;
+    }
+
+    .desc-box {
+      width: 100%;
+      height: 80px;
+      margin-top: 10px;
+      resize: none;
+      padding: 10px;
+      background-color: #eee;
+      border: 1px solid #ccc;
+      color: #444;
+    }
+
+    .evidence {
+      display: flex;
+      justify-content: center; /* center horizontally */
+      gap: 40px;
+      margin-top: 15px;
+      flex-wrap: wrap;
+    }
+
+    .evidence img {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      border: 1px solid #999;
+    }
+
+    .optional {
+      text-align: center;
+      font-style: italic;
+      margin: 20px 0 10px;
+    }
+
+    .bottom-section {
+      margin-top: 30px;
+      border-top: 1px solid #aaa;
+      padding-top: 20px;
+    }
+
+
+    /* // NEW CODE START: Accept/Deny button styles */
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      gap: 20px;
+    }
+    .action-buttons button {
+      padding: 10px 20px;
+      border: none;
+      color: white;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .action-buttons .deny:hover {
+      background-color: #610707;
+    }
+
+    .action-buttons .accept:hover {
+      background-color: #064f0f;
+    }
+    .action-buttons .deny {
+      background-color: #b30606;
+    }
+
+    .action-buttons .accept {
+      background-color: #09ab1c;
+    }
+
+    /* // NEW CODE END */
+
+
+    /* Footer */
+    footer {
+      background-color: #333;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      padding: 20px 30px;
+      font-size: 0.9rem;
+      flex-wrap: wrap;
+    }
+
+    footer .leftside {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      max-width: 500px;
+      margin-top: 10px;
+    }
+
+    footer img {
+      margin-right: 25px;
+      margin-left: 10px;
+      height: 100px;
+    }
+
+    footer .footer-section1 {
+      max-width: 200px;
+      margin-right: 100px;
+    }
+
+
+    footer h4 {
+      margin-bottom: 10px;
+    }
+
+    footer ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    footer ul li {
+      margin-bottom: 8px;
+    }
+
+    footer ul li a {
+      color: white;
+      text-decoration: none;
+    }
+
+    /* === NOTIFICATION POPUP === */
+    .notification-popup {
+      position: fixed;
+      top: 80px;
+      right: 30px;
+      width: 320px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+      z-index: 999;
+      display: none;
+      flex-direction: column;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .notification-popup .popup-header {
+      background: #2e3b0d;
+      color: white;
+      padding: 12px 16px;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .notification-popup .popup-header span {
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .notification-popup .popup-section {
+      padding: 10px 16px;
+    }
+
+    .notification-popup .popup-section h5 {
+      margin: 10px 0 5px;
+      font-size: 14px;
+      color: #888;
+    }
+
+    .notification-popup .notif-item {
+      padding: 8px 0;
+      border-bottom: 1px solid #eee;
+      font-size: 14px;
+      cursor: pointer;
+      color: #2e3b0d;
+    }
+
+    .notification-popup .notif-item:last-child {
+      border-bottom: none;
+    }
+
+    .notification-popup .notif-item:hover {
+      background-color: #f8f8f8;
+    }
+
+    /* === MODAL STYLES FOR TERMS POPUP === */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      margin-top: 50px;      
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 5% auto;
+      padding: 0;
+      border-radius: 10px;
+      width: 80%;
+      max-width: 600px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+
+    .modal-scrollable {
+        padding: 5px 20px;
+        max-height: 70vh;
+        overflow-y: auto;
+        overflow-x: hidden;
+        position: relative;
+    }
+
+    .modal-scrollable h2 {
+      text-align: center;
+      color: #4B5320;
+      margin-top: 0px;
+    }
+
+    .modal-scrollable h3 {
+      color: #BF8C00;
+      margin-top: 1em;
+    }
+
+    .close {
+        display: block;
+        text-align: right;
+        margin-right: 10px; /* 🟢 moves it to the left of the scrollbar */
+        margin-top: 0px;
+        font-size: 24px;
+        font-weight: bold;
+        color: #aaa;
+        cursor: pointer;
+    }
+
+    .close:hover {
+        color: black;
+    }
+
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }    
+  
+.custom-modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  justify-content: center;
+  align-items: center;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.modal-content {
+  background-color: #fff;
+  border: 3px solid #556B2F;
+  padding: 25px 30px;
+  border-radius: 12px;
+  text-align: center;
+  max-width: 400px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.modal-content p {
+  font-size: 18px;
+  margin-bottom: 25px;
+  color: #2e3b0d;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.confirm-btn,
+.cancel-btn {
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.confirm-btn {
+  background-color: #2e3b0d;
+  color: white;
+}
+
+.confirm-btn:hover {
+  background-color: #3c4f1a;
+}
+
+.cancel-btn {
+  background-color: #ccc;
+  color: #333;
+}
+
+.cancel-btn:hover {
+  background-color: #b2b2b2;
+}
+
+  </style>
+</head>
+<body>
+  <header>
+    <div style="display: flex; align-items: center;">
+      <img src="files/logo.png" alt="Barangay Logo">
+      <div style="margin-left: 10px;">
+        <div><strong>Barangay Market Area:</strong></div>
+        <div>Complaint System</div>
+      </div>
+    </div>
+    <nav>
+      <a href="staffHomepage.html" onclick="scrollToTop(event)">Home</a>
+      <a href="manageComplaints.html">Manage Complaints</a>
+      <a href="quickMetrics.html">Quick Metrics</a>
+      <div class="profile-container">
+        <div class="profile-circle" onclick="toggleDropdown()"></div>
+        <div class="dropdown-menu" id="dropdownMenu">
+          <a href="staffProf.html"><img src="files/profile.png" alt="Profile Icon">Profile</a>
+          <a href="#"onclick="openNotifFromDropdown(event)"><img src="files/notif.png" alt="Notifications Icon">Notifications</a>
+          <a href="settings.html"><img src="files/settings.png" alt="Settings Icon">Settings</a>
+          <a href="#" onclick="return confirmLogout()"><img src="files/logout.png" alt="Logout Icon">Logout</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+    <div class="form-container">
+      <div class="row">
+        <div class="info">
+          <p><strong>Date Filed:</strong> 06/22/25</p>
+          <p><strong>Name:</strong> Alberto Cruz</p>
+          <p><strong>Age:</strong> 45</p>
+          <p><strong>Gender:</strong> Male</p>
+          <p><strong>Address:</strong> 104 Purok 2, Barangay Market Area</p>
+          <p><strong>Contact:</strong> 09278889912</p>
+          <p><strong>Email:</strong> alberto.cruz@email.com</p>
+        </div>
+        <img src="https://via.placeholder.com/150?text=ID" class="photo" alt="ID Photo">
+      </div>
+
+      <div class="section"> 
+        <p><strong>Type of Complaint:</strong> Illegal Dumping</p>
+        <p><strong>Date and Time of Incident:</strong> 06/21/25, 7:45 PM</p>
+        <p><strong>Location of Incident:</strong> Beside Barangay Covered Court</p>
+        <p><strong>Description:</strong></p>
+        <textarea class="desc-box" disabled>
+        Piles of garbage have been dumped at the side of the covered 
+        court, emitting a foul smell and attracting stray animals. 
+        Suspect seen unloading sacks of trash from a tricycle.
+        </textarea>
+
+        <p><strong>Photo, Video, or Screenshot Evidence (Optional):</strong></p>
+        <div class="evidence">
+          <img src="https://via.placeholder.com/100?text=Trash+1" alt="Evidence 1">
+          <img src="https://via.placeholder.com/100?text=Trash+2" alt="Evidence 2">
+        </div>
+      </div>
+
+      <div class="section">
+        <p class="optional">(Optional)</p>
+        <p><strong>Witness Details:</strong></p>
+        <p><strong>Name:</strong> Teresa Baluyot</p>
+        <p><strong>Contact:</strong> 09123409876</p>
+      </div>
+
+      <div class="bottom-section">
+        <p><strong>Schedule of Appointment:</strong> 06/30/25, 3:00 PM</p>
+        <p><strong>Assigned to:</strong> Officer Dela Cruz</p>
+      </div>
+    </div>
+
+      <!-- ADD THIS BELOW YOUR <div class="bottom-section"> -->
+      <div class="action-buttons"> <!-- // NEW CODE START: Accept & Deny buttons -->
+        <button onclick="denyComplaint()" class="deny">Deny</button>
+        <button onclick="acceptComplaint()" class="accept">Accept</button>
+      </div> <!-- // NEW CODE END -->
+  </div>
+
+
+  <footer>
+    <div class="footer-section">
+      <div class="leftside">
+        <img src="files/logo.png" alt="Barangay Logo" />
+        <p>
+         Brgy. Market Area in Sta. Rosa, Laguna is a vibrant urban community known for its public market, 
+          transport terminals, and local businesses—serving as a key center of commerce and daily activity.
+        </p>
+      </div>
+    </div>
+    <div class="footer-section1">
+      <h4>Quick Menu</h4>
+      <ul>
+        <li><a href="staffHomepage.html">Home</a></li>
+        <li><a href="manageComplaints.html">Manage Complaint</a></li>
+        <li><a href="quickMetrics.html">Quick Metrics</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <!-- === CUSTOM LOGOUT MODAL === -->
+<div id="logoutModal" class="custom-modal">
+  <div class="modal-content">
+    <p><strong>Are you sure you want to logout?</strong></p>
+    <div class="modal-buttons">
+      <button class="confirm-btn" onclick="confirmLogoutAction()">Yes, Logout</button>
+      <button class="cancel-btn" onclick="closeLogoutModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+  <!-- === NOTIFICATION POPUP START === -->
+  <div id="notifPopup" class="notification-popup">
+    <div class="popup-header">
+      Notifications
+      <span onclick="closeNotifPopup()">×</span>
+    </div>
+    <div class="popup-section">
+      <h5>Today</h5>
+      <div class="notif-item" onclick="window.location.href='complaintApprovalAction.html'">
+        Juan Dela Cruz submitted a noise complaint.
+      </div>
+      <div class="notif-item" onclick="window.location.href='complaintApprovalAction.html2'">
+        Alberto Cruz submitted a illegal dumping complaint.
+      </div>
+    </div>
+    <!--
+        <div class="popup-section">
+      <h5>This Week</h5>
+      <div class="notif-item" onclick="window.location.href='complaintApprovalAction.html'">
+        Carlo Santos submitted a vending complaint.
+      </div>
+      <div class="notif-item" onclick="window.location.href='complaintApprovalAction.html'">
+        Ana Lim reported a dispute with a neighbor.
+      </div>
+    </div>
+  </div>
+      -->
+  <!-- === NOTIFICATION POPUP END === -->
+
+
+  <script>
+    function toggleDropdown() {
+      const menu = document.getElementById('dropdownMenu');
+      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    }
+
+    window.onclick = function (event) {
+      if (!event.target.closest('.profile-container')) {
+        const dropdown = document.getElementById('dropdownMenu');
+        if (dropdown) dropdown.style.display = 'none';
+      }
+    }
+
+    function scrollToTop(event) {
+      event.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /*NOTIFICATION*/
+    function toggleDropdown() {
+      const dropdown = document.getElementById('dropdownMenu');
+      const notif = document.getElementById('notifPopup');
+      notif.style.display = 'none'; // hide notif popup
+      dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function openNotifFromDropdown(event) {
+      event.preventDefault();
+      document.getElementById('dropdownMenu').style.display = 'none'; // close dropdown
+      document.getElementById('notifPopup').style.display = 'flex'; // open notif
+    }
+
+    function closeNotifPopup() {
+      document.getElementById('notifPopup').style.display = 'none';
+    }
+
+    // Close everything on outside click
+    window.onclick = function (e) {
+      if (!e.target.closest('.profile-container') && !e.target.closest('.notification-popup')) {
+        document.getElementById('dropdownMenu').style.display = 'none';
+        closeNotifPopup();
+      }
+    }        
+
+
+    // // NEW CODE START: Accept/Deny JavaScript
+    function acceptComplaint() {
+      let complaintCounter = parseInt(localStorage.getItem('complaintCounter') || '1');
+      const complaint = {
+        id: complaintCounter, // ✅ Store the numeric ID
+        complainant: "Juan De Luna",
+        category: "Noise",
+        date: "2025-03-03",
+        description: "This is a description of the noise incident...",
+        status: "New"
+      };
+
+      let stored = JSON.parse(localStorage.getItem('acceptedComplaints')) || [];
+      stored.push(complaint);
+      localStorage.setItem('acceptedComplaints', JSON.stringify(stored));
+      alert('Complaint accepted and moved to new complaint list.');
+      window.location.href = 'newComplaint.html';
+
+      stored.push(complaint);
+      localStorage.setItem('acceptedComplaints', JSON.stringify(stored));
+
+      // ✅ NEW: Increment the counter
+      complaintCounter++;
+      localStorage.setItem('complaintCounter', complaintCounter.toString());
+
+    
+    }
+
+    function denyComplaint() {
+      alert('Complaint has been denied.');
+      window.location.href = 'staffHomepage.html'; // or wherever you want
+    }
+    // // NEW CODE END
+
+
+
+        /*TERMS AND CONDITION*/
+    function openTerms(event) {
+      event.preventDefault();
+      document.getElementById('termsModal').style.display = 'flex';
+    }
+
+    function closeTerms() {
+      document.getElementById('termsModal').style.display = 'none';
+    }
+
+    // Open modal
+    function openModal() {
+      document.getElementById("termsModal").style.display = "block";
+    }
+
+    // Close modal
+    function closeModal() {
+      document.getElementById("termsModal").style.display = "none";
+    }
+
+    // ==========================
+    // NOTIFICATION FUNCTIONALITY
+    // ==========================
+
+    function openNotifFromDropdown(event) {
+      event.preventDefault();
+      document.getElementById('dropdownMenu').style.display = 'none';
+      document.getElementById('notifPopup').style.display = 'flex';
+    }
+
+    function toggleDropdown() {
+      const dropdown = document.getElementById('dropdownMenu');
+      const notif = document.getElementById('notifPopup');
+      notif.style.display = 'none';
+      dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function closeNotifPopup() {
+      document.getElementById('notifPopup').style.display = 'none';
+    }
+
+    function scrollToTop(event) {
+      event.preventDefault();
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+
+    // Modal functionality (Terms & Conditions)
+    function openModal() {
+      document.getElementById("termsModal").style.display = "block";
+    }
+
+    function closeModal() {
+      document.getElementById("termsModal").style.display = "none";
+    }
+
+    // Close modal or dropdown when clicking outside
+    window.onclick = function (event) {
+      const modal = document.getElementById("termsModal");
+      if (event.target == modal) {
+        closeModal();
+      }
+
+      if (!event.target.closest('.profile-container') && !event.target.closest('.notification-popup')) {
+        document.getElementById('dropdownMenu').style.display = 'none';
+        closeNotifPopup();
+      }
+    }
+    
+function confirmLogout() {
+  document.getElementById('logoutModal').style.display = 'flex';
+  return false; // Prevent the <a> tag from redirecting
+}
+
+function closeLogoutModal() {
+  document.getElementById('logoutModal').style.display = 'none';
+}
+
+function confirmLogoutAction() {
+  window.location.href = "staffLogin.html"; // ✅ your original destination
+};
+
+  </script>
+</body>
+</html>

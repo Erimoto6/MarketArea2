@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>E-Blotter Information Form</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="cform.css">
+</head>
+<body>
+
+  <!-- HEADER SECTION -->
+	<header class="header_gradient">
+  		<div class="header-left">
+    		<img class="market-area-logo" src="logo.png" alt="Logo" />
+    		<div class="barangay-title">
+      		<p class="barangay-market-area">barangay market area:</p>
+      		<p class="barangay-market-area">Complaint system</p>
+    		</div>
+  		</div>
+
+  		<div class="navbar">
+  			<div class="nav-links">
+    			<a href="residentHomepage.html">Home</a>
+    			<a href="my_complaints.html">My Complaints</a>
+    			<a href="contact.html">Contacts</a>
+  			</div>
+
+  		<!-- Profile + Sidebar Wrapper -->
+		<div class="profile-sidebar-wrapper">
+  		<!-- Profile Trigger -->
+  		<div class="profile-link" id="profileTrigger">
+    		<div class="profile"></div>
+  		</div>
+
+  		<!-- Collapsible Sidebar -->
+  		<div class="sidebar collapsed" id="profileSidebar">
+			<a href="#" class="sidebar-item">
+      			<i class="icon">👤</i>
+      			<span class="label">Profile</span>
+    		</a>
+    		<a href="#" class="sidebar-item">
+      			<i class="icon">⚙️</i>
+      			<span class="label">Settings</span>
+			</a>
+    		<a href="#" class="sidebar-item">
+      			<i class="icon">🔐</i>
+      			<span class="label">Account & Security</span>
+			</a>
+    		<a href="residentLogin.html" class="sidebar-item" id="logout-btn">
+  				<i class="icon">⏻</i>
+  				<span class="label">Logout</span>
+			</a>
+  		</div>
+		</div>
+		</div>
+		</header>
+
+
+
+  <main class="form-container">
+      <form id="blotter-form" class="e-blotter-form">
+      <h2>E-Blotter Information Form</h2>
+      <p class="instruction">Fill all input fields.</p>
+
+      <div class="blotter-progress-container">
+        <div class="blotter-progress-line">
+        <div class="blotter-step active">Personal Info</div>
+        <div class="blotter-step">Complaint</div>
+        <div class="blotter-step">Evidence</div>
+    </div>
+    </div>
+
+      <!-- Personal Information -->
+      <fieldset class="form-step active">
+        <legend class="section-title">Personal Information</legend>
+        <div class="row">
+          <input type="text" placeholder="Last Name" required>
+          <input type="text" placeholder="First Name" required>
+          <input type="text" placeholder="Middle Name" required>
+          <input type="text" placeholder="Suffix">
+
+          <select name="Sex" id="Sex" required>
+          <option value="" selected disabled>Sex</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+          </select>
+
+        </div>
+        <div class="row">
+          <input type="text" placeholder="Address" required>
+          <input type="text" placeholder="Age" required>
+          <input type="text" placeholder="Occupation" required>
+          <input type="text" placeholder="Contact Number" required>
+        </div>
+        
+      </fieldset>
+
+      <!-- Complaint Details -->
+      <fieldset class="form-step">
+        <legend class="section-title">Complaint Details</legend>
+        <div class="row">
+        <select required>
+        <option value="" selected disabled>Select type of complaint</option>
+        <option value="Noise">Noise</option>
+        <option value="Vandalism">Vandalism</option>
+        <option value="Neighnorhood Dispute">Neighnorhood Dispute</option>
+        <option value="Unpaid Dept">Unpaid Dept</option>
+        <option value="Other">Other</option>
+        </select>
+          <input type="text" placeholder="Respondent" required>
+        </div>
+        <div class="row">
+          <input type="date" placeholder="Date and Time of Incident" required>
+          <input type="text" placeholder="Location of the Incident" required>
+        </div>
+        <textarea placeholder="Detailed Description of the Incident" required></textarea>
+      </fieldset>
+
+      <!-- Supporting Evidence -->
+      <fieldset class="form-step">
+        <legend class="section-title">Supporting Evidence</legend>
+
+      <div class="row">
+       <input type="file" name="evidenceFiles" accept="image/*,video/*" multiple>
+       <label style="font-size:12px;color:#555;margin-bottom:10px;">You may select multiple images or videos.</label>
+       
+       <input type="text" placeholder="Witness (N/A if none)">
+       <input type="text" placeholder="Name">
+       <input type="text" placeholder="Contact Number">
+       </div>
+      </fieldset>
+    </form>
+
+  <!-- Terms and Conditions Checkbox (last field) -->
+  <div class="terms-container">
+    <input type="checkbox" id="terms-checkbox" required>
+    <label for="terms-checkbox">
+      I agree to the <a href="#" id="terms-link">Terms and Conditions</a>
+    </label>
+  </div>
+
+  <div id="terms-modal">
+    <div class="terms-modal-content">
+      <h3>Terms and Conditions</h3>
+      <p>
+        By submitting this complaint, you agree to abide by the rules and regulations of the Barangay E-Blotter System. Your information will be kept confidential and used solely for the purpose of resolving your complaint.
+      </p>
+      <button id="close-terms-modal">Close</button>
+    </div>
+  </div>
+
+    <div class="form-nav-center">
+      <button type="button" class="nav-btn prev-btn" onclick="prevStep()">Previous</button>
+      <button type="button" class="nav-btn next-btn" onclick="nextStep()">Next</button>
+      <button type="submit" class="submit-btn nav-btn">Submit Complaint</button>
+    </div>
+    </form>
+  </main>
+
+
+  <!--FOOTER SECTION-->
+		<footer class="footer">
+            <div class="footer-left">
+                <img class="market-area-logo2" src="logo.png" alt="Barangay Logo" />
+                <p class="a-barangay-that">
+                    A Barangay that is God-centered, united, service-oriented, inclusive, and responsive — guided by faith, integrity, and accountable governance.
+                </p>
+            </div>
+
+            <div class="footer-right-group">
+                <div class="footer-middle">
+                    <h4 class="footer-heading">Other Services</h4>
+                    <p class="footer-link">Insert Site</p>
+                    <p class="footer-link">Insert Site</p>
+                    <p class="footer-link">Insert Site</p>
+                </div>
+
+            <div class="footer-right">
+                <h4 class="footer-heading">Gov't Info</h4>
+                <p class="footer-link">Privacy Policy</p>
+                <p class="footer-link"><a href="#" id="footer-terms-link">Terms & Conditions</a></p>
+                <p class="footer-link">FAQ</p>
+            </div>
+            </div>
+            </footer>
+
+
+  <script>
+  const profileTrigger = document.getElementById('profileTrigger');
+  const sidebar = document.getElementById('profileSidebar');
+ 
+  // Terms modal logic 
+  document.getElementById('terms-link').addEventListener('click', function(e) {
+    e.preventDefault();
+    document.getElementById('terms-modal').style.display = 'flex';
+  });
+  document.getElementById('footer-terms-link').addEventListener('click', function(e) {
+    e.preventDefault();
+    document.getElementById('terms-modal').style.display = 'flex';
+  });
+  document.getElementById('close-terms-modal').addEventListener('click', function() {
+    document.getElementById('terms-modal').style.display = 'none';
+  });
+  document.getElementById('terms-modal').addEventListener('click', function(e) {
+    if (e.target === this) {
+      this.style.display = 'none';
+    }
+  });
+
+  profileTrigger.addEventListener('click', (e) => {
+    e.preventDefault(); // prevent anchor from navigating
+    sidebar.classList.toggle('show');
+  });
+
+  document.addEventListener('click', function (e) {
+    const wrapper = document.querySelector('.profile-sidebar-wrapper');
+    if (!wrapper.contains(e.target)) {
+      sidebar.classList.remove('show');
+    }
+  });
+
+  document.getElementById('logout-btn').addEventListener('click', function (e) {
+    e.preventDefault(); // Stop the default navigation
+
+    if (confirm("Are you sure you want to log out?")) {
+      // Proceed to logout if confirmed
+      window.location.href = this.href;
+    }
+  });
+
+  const steps = document.querySelectorAll('.form-step');
+  const progressSteps = document.querySelectorAll('.blotter-step');
+  const prevBtn = document.querySelector('.prev-btn');
+  const nextBtn = document.querySelector('.next-btn');
+  const submitBtn = document.querySelector('.submit-btn');
+
+  let currentStep = 0;
+
+  function updateFormSteps() {
+    steps.forEach((step, index) => {
+      step.style.display = index === currentStep ? 'block' : 'none';
+    });
+
+    progressSteps.forEach((step, index) => {
+      step.classList.toggle('active', index === currentStep);
+    });
+
+    prevBtn.disabled = currentStep === 0;
+    nextBtn.style.display = currentStep === steps.length - 1 ? 'none' : 'inline-block';
+    submitBtn.style.display = currentStep === steps.length - 1 ? 'inline-block' : 'none';
+  }
+
+  function nextStep() {
+    if (currentStep < steps.length - 1) {
+      currentStep++;
+      updateFormSteps();
+    }
+  }
+
+  function prevStep() {
+    if (currentStep > 0) {
+      currentStep--;
+      updateFormSteps();
+    }
+  }
+
+  // Run on page load
+  updateFormSteps();
+
+</script>
+
+</body>
+</html>

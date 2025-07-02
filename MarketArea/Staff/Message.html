@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E-Blotter System - Messages</title>
+    <link rel="icon" href="files/logo.png" type="image/png" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Trebuchet MS", sans-serif;
+        background: url('files/marketareabg1.jpg') no-repeat center center fixed;
+        background-size: cover;
+      }
+          
+      body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6); /* adjust the color & transparency */
+  z-index: -1;
+}
+
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      /* Sticky Header Styling */
+      header a {
+        text-decoration: none;
+      }
+
+      header {
+        padding: 0 20px;
+        background: linear-gradient(90deg, #4b5320, #2b3209);
+        height: 60px;
+        display: flex;
+        justify-content: space-between;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        z-index: 9999;
+      }
+
+      #brand {
+        font-weight: bold;
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+      }
+
+      #brand a {
+        color: white;
+        margin-left: 10px;
+      }
+
+      #brand img.logo {
+        height: 50px;
+        width: auto;
+      }
+
+      .brand-text::after {
+        content: "Barangay Market Area: Complaint System";
+      }
+
+      /* === Navigation Bar Styles === */
+
+      nav .nav-list {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      .nav-list li {
+        margin: 0 10px;
+        position: relative;
+      }
+
+      .nav-list li a {
+        display: inline-block;
+        padding: 10px 18px;
+        font-family: "Verdana", sans-serif;
+        font-size: 15px;
+        color: white;
+        text-decoration: none;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+      }
+
+      /* Hover Effect - Light Green + Scale */
+      .nav-list li a:hover {
+        background-color: #71873f;
+        transform: scale(1.05);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        color: white;
+      }
+
+      /* Active Page Link */
+      .nav-list li a.active {
+        background: linear-gradient(90deg, #6a7337, #4b5320);
+        font-weight: bold;
+        color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        transform: scale(1.05);
+      }
+
+      /* Active Page Link + Hover */
+      .nav-list li a.active:hover {
+        background: linear-gradient(90deg, #7e8c4d, #5a642c);
+        transform: scale(1.08);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+      }
+
+
+      #hamburger-icon {
+        display: none;
+        flex-direction: column;
+        cursor: pointer;
+        padding: 10px;
+      }
+
+      .bar1, .bar2, .bar3 {
+        width: 25px;
+        height: 3px;
+        background-color: white;
+        margin: 3px 0;
+        transition: 0.3s;
+      }
+
+      .mobile-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background:  linear-gradient(90deg, #4b5320, #2b3209);
+        flex-direction: column;
+        list-style: none;
+        padding: 1rem 0;
+      }
+
+      .mobile-menu li a {
+        color: white;
+        text-decoration: none;
+        padding: 15px 2rem;
+        display: block;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      /* Main Content */
+      .main-content {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 2rem;
+      }
+
+      .page-header {
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+        margin-top: 5.5rem;
+      }
+
+      .page-header h1 {
+        color: #2c3e50;
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .page-header p {
+        color: #7f8c8d;
+        font-size: 1.1rem;
+      }
+
+      /* Messages Container */
+      .messages-container {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      .messages-header {
+        background:  linear-gradient(90deg, #4b5320, #2b3209);
+        color: white;
+        padding: 1.5rem 2rem;
+      }
+
+      .messages-header h2 {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .message-row {
+        display: flex;
+        align-items: center;
+        padding: 1.5rem 2rem;
+        border-bottom: 1px solid #ecf0f1;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      .message-row:hover {
+        background-color: #f8f9fa;
+        transform: translateX(5px);
+      }
+
+      .message-row:last-child {
+        border-bottom: none;
+      }
+
+      .message-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #7A5A2F 0%, #A67C3A 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        font-size: 1.2rem;
+        margin-right: 1rem;
+        flex-shrink: 0;
+      }
+
+      .message-info {
+        flex: 1;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .message-details {
+        flex: 1;
+      }
+
+      .sender-name {
+        font-weight: 600;
+        color: #2c3e50;
+        font-size: 1.1rem;
+        margin-bottom: 0.3rem;
+      }
+
+      .message-subject {
+        color: #7f8c8d;
+        font-size: 0.95rem;
+        margin-bottom: 0.2rem;
+      }
+
+      .message-preview {
+        color: #95a5a6;
+        font-size: 0.85rem;
+        max-width: 300px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .message-time {
+        color: #95a5a6;
+        font-size: 0.9rem;
+        text-align: right;
+        flex-shrink: 0;
+        margin-left: 1rem;
+      }
+
+      .unread-indicator {
+        width: 12px;
+        height: 12px;
+        background-color: #e74c3c;
+        border-radius: 50%;
+        position: absolute;
+        left: 1.2rem;
+        top: 1.2rem;
+      }
+
+      /* Message Modal */
+.message-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 2000;
+  overflow: hidden;
+  margin-top: 50px;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+/* Modal box */
+.modal-content {
+  background: white;
+  width: 70%;
+  max-width: 860px;
+  max-height: 85vh;
+  margin: 5vh auto;
+  border-radius: 25px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Keeps scroll inside rounded box */
+  animation: slideIn 0.3s ease;
+}
+
+/* Header */
+.modal-header {
+  background: linear-gradient(90deg, #6a7337, #4b5320);
+  color: white;
+  padding: 2rem;
+  border-radius: 25px 25px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* Scrollable body */
+.modal-body {
+  padding: 1.5rem;
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+/* Optional: message metadata */
+.message-meta {
+  margin-bottom: 1rem;
+}
+.meta-row {
+  display: flex;
+  margin-bottom: 0.5rem;
+}
+.meta-label {
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+.meta-value {
+  flex: 1;
+}
+
+/* Footer actions inside modal */
+.modal-actions {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+
+      .close-modal {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 2rem;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+      }
+
+      .close-modal:hover {
+        transform: scale(1.1);
+      }
+
+      .modal-body {
+        padding: 2rem;
+      }
+
+      .message-meta {
+        background: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 10px;
+        margin-bottom: 2rem;
+      }
+
+      .meta-row {
+        display: flex;
+        margin-bottom: 0.8rem;
+      }
+
+      .meta-row:last-child {
+        margin-bottom: 0;
+      }
+
+      .meta-label {
+        font-weight: 600;
+        color: #2c3e50;
+        width: 100px;
+        flex-shrink: 0;
+      }
+
+      .meta-value {
+        color: #7f8c8d;
+        flex: 1;
+      }
+
+      .message-content {
+        line-height: 1.6;
+        color: #2c3e50;
+        font-size: 1rem;
+        margin-bottom: 2rem;
+      }
+
+      .modal-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-end;
+        padding-top: 1rem;
+        border-top: 1px solid #ecf0f1;
+      }
+
+      .btn {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #7A5A2F 0%, #A67C3A 100%);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(122, 90, 47, 0.3);
+      }
+
+      .btn-secondary {
+        background: #ecf0f1;
+        color: #7f8c8d;
+      }
+
+      .btn-secondary:hover {
+        background: #bdc3c7;
+      }
+
+      /* Feedback Modal */
+      .feedback-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 3000;
+        animation: fadeIn 0.3s ease;
+      }
+
+      .feedback-content {
+        position: relative;
+        background: white;
+        max-width: 400px;
+        margin: 20% auto;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        animation: slideIn 0.3s ease;
+        text-align: center;
+        padding: 2rem;
+      }
+
+      .feedback-icon {
+        font-size: 3rem;
+        color: #3498db;
+        margin-bottom: 1rem;
+      }
+
+      .feedback-message {
+        font-size: 1.2rem;
+        color: #2c3e50;
+        margin-bottom: 1.5rem;
+        line-height: 1.5;
+      }
+
+      .feedback-btn {
+        background: linear-gradient(135deg, #7A5A2F 0%, #A67C3A 100%);
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .feedback-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(122, 90, 47, 0.3);
+      }
+
+      /* Animations */
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+
+      @keyframes slideIn {
+        from { 
+          opacity: 0;
+          transform: translateY(-50px);
+        }
+        to { 
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        header {
+          flex-wrap: wrap;
+          padding: 0 1rem;
+        }
+
+        nav {
+          display: none;
+        }
+
+        #hamburger-icon {
+          display: flex;
+        }
+
+        .mobile-menu.open {
+          display: flex;
+        }
+
+        #hamburger-icon.open .bar1 {
+          transform: rotate(-45deg) translate(-5px, 6px);
+        }
+
+        #hamburger-icon.open .bar2 {
+          opacity: 0;
+        }
+
+        #hamburger-icon.open .bar3 {
+          transform: rotate(45deg) translate(-5px, -6px);
+        }
+
+        .main-content {
+          padding: 0 1rem;
+        }
+
+        .message-row {
+          padding: 1rem;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 1rem;
+        }
+
+        .message-info {
+          width: 100%;
+        }
+
+        .message-preview {
+          max-width: none;
+        }
+
+        .modal-content {
+          margin: 5% 1rem;
+          max-width: none;
+        }
+
+        .modal-header,
+        .modal-body {
+          padding: 1.5rem;
+        }
+
+        .modal-actions {
+          flex-direction: column;
+        }
+
+        .feedback-content {
+          margin: 30% 1rem;
+          max-width: none;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Header -->
+    <header>
+      <div id="brand"> <!--Header Title-->
+        <img src="files/logo.png" alt="" class="logo" /><a
+          class="brand-text"
+        ></a>
+      </div>
+      <nav>
+        <ul class="nav-list">
+          <li><a href="staffHomepage.html">Home</a></li>
+          <li><a href="manageComplaints.html">Manage Complaints</a></li>
+          <li><a href="Message.html">Message</a></li>
+          <li><a href="settings.html">Settings</a></li>
+        </ul>
+      </nav>
+      <div id="hamburger-icon" onclick="toggleMobileMenu(this)">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+      </div>
+      <ul class="mobile-menu">
+          <li><a href="staffHomepage.html">Home</a></li>
+          <li><a href="manageComplaints.html">Manage Complaints</a></li>
+          <li><a href="Message.html">Message</a></li>
+          <li><a href="settings.html">Settings</a></li>
+      </ul>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="page-header">
+        <h1><i class="fas fa-envelope"></i> Messages</h1>
+        <p>Follow-up messages and communications from complainants</p>
+      </div>
+
+      <div class="messages-container">
+        <div class="messages-header">
+          <h2>Complaint Follow-ups</h2>
+          <small>Click on any message to view details and reply</small>
+        </div>
+
+        <!-- Message Rows -->
+        <div class="message-row" onclick="openMessage(1)">
+          <div class="unread-indicator"></div>
+          <div class="message-avatar">JD</div>
+          <div class="message-info">
+            <div class="message-details">
+              <div class="sender-name">Juan Dela Cruz</div>
+              <div class="message-subject">Follow-up: Noise Complaint - Case #2024-001</div>
+              <div class="message-preview">Hello, I wanted to follow up on my noise complaint. The issue is still ongoing and I haven't heard back...</div>
+            </div>
+            <div class="message-time">2 hours ago</div>
+          </div>
+        </div>
+
+        <div class="message-row" onclick="openMessage(2)">
+          <div class="message-avatar">MS</div>
+          <div class="message-info">
+            <div class="message-details">
+              <div class="sender-name">Maria Santos</div>
+              <div class="message-subject">Update: Illegal Parking - Case #2024-002</div>
+              <div class="message-preview">Good morning, I would like to provide additional evidence regarding the illegal parking complaint...</div>
+            </div>
+            <div class="message-time">1 day ago</div>
+          </div>
+        </div>
+
+        <div class="message-row" onclick="openMessage(3)">
+          <div class="message-avatar">RL</div>
+          <div class="message-info">
+            <div class="message-details">
+              <div class="sender-name">Roberto Lopez</div>
+              <div class="message-subject">Thank you - Case #2024-003</div>
+              <div class="message-preview">Thank you for resolving my complaint about the street lighting. The issue has been fixed...</div>
+            </div>
+            <div class="message-time">3 days ago</div>
+          </div>
+        </div>
+
+        <div class="message-row" onclick="openMessage(4)">
+          <div class="unread-indicator"></div>
+          <div class="message-avatar">AB</div>
+          <div class="message-info">
+            <div class="message-details">
+              <div class="sender-name">Ana Bautista</div>
+              <div class="message-subject">Urgent: Stray Dogs - Case #2024-004</div>
+              <div class="message-preview">This is urgent. The stray dogs are becoming more aggressive and I'm concerned for my family's safety...</div>
+            </div>
+            <div class="message-time">5 hours ago</div>
+          </div>
+        </div>
+
+        <div class="message-row" onclick="openMessage(5)">
+          <div class="message-avatar">CG</div>
+          <div class="message-info">
+            <div class="message-details">
+              <div class="sender-name">Carlos Garcia</div>
+              <div class="message-subject">Additional Information - Case #2024-005</div>
+              <div class="message-preview">I have some additional information that might help with the investigation of my complaint...</div>
+            </div>
+            <div class="message-time">1 week ago</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Message Modal -->
+    <div id="messageModal" class="message-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="modal-title" id="modalTitle">Message Details</div>
+          <button class="close-modal" onclick="closeMessage()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="message-meta">
+            <div class="meta-row">
+              <div class="meta-label">From:</div>
+              <div class="meta-value" id="modalSender">-</div>
+            </div>
+            <div class="meta-row">
+              <div class="meta-label">Subject:</div>
+              <div class="meta-value" id="modalSubject">-</div>
+            </div>
+            <div class="meta-row">
+              <div class="meta-label">Date:</div>
+              <div class="meta-value" id="modalDate">-</div>
+            </div>
+            <div class="meta-row">
+              <div class="meta-label">Case ID:</div>
+              <div class="meta-value" id="modalCaseId">-</div>
+            </div>
+          </div>
+          
+          <div class="message-content" id="modalContent">
+            <!-- Message content will be populated here -->
+          </div>
+          
+          <div class="modal-actions">
+            <button class="btn btn-secondary" onclick="closeMessage()">
+              <i class="fas fa-times"></i> Close
+            </button>
+            <button class="btn btn-primary" onclick="showFeedback()">
+              <i class="fas fa-reply"></i> Reply via Email
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feedback Modal -->
+    <div id="feedbackModal" class="feedback-modal">
+      <div class="feedback-content">
+        <div class="feedback-icon">
+          <i class="fas fa-envelope-open"></i>
+        </div>
+        <div class="feedback-message">
+          Redirecting to your email application to reply to this message.
+        </div>
+        <button class="feedback-btn" onclick="closeFeedback()">
+          <i class="fas fa-check"></i> OK
+        </button>
+      </div>
+    </div>
+
+    <script>
+      // Sample message data
+      const messages = {
+        1: {
+          sender: "Juan Dela Cruz",
+          email: "juan.delacruz@email.com",
+          subject: "Follow-up: Noise Complaint - Case #2024-001",
+          date: "December 28, 2024 - 2:30 PM",
+          caseId: "2024-001",
+          content: `Hello,
+
+I wanted to follow up on my noise complaint that I filed last week (Case #2024-001). The issue is still ongoing and I haven't heard back from your office regarding any action taken.
+
+The noise from the construction site next to my house continues to disturb our family, especially during early morning hours (5:00 AM - 7:00 AM) which violates the noise ordinance. My children can't sleep properly, and it's affecting their studies.
+
+Could you please provide an update on this matter? I would appreciate any information on when this issue might be resolved.
+
+Thank you for your time and consideration.
+
+Best regards,
+Juan Dela Cruz
+Contact: 0912-345-6789`
+        },
+        2: {
+          sender: "Maria Santos",
+          email: "maria.santos@email.com",
+          subject: "Update: Illegal Parking - Case #2024-002",
+          date: "December 27, 2024 - 10:15 AM",
+          caseId: "2024-002",
+          content: `Good morning,
+
+I would like to provide additional evidence regarding the illegal parking complaint I filed (Case #2024-002).
+
+I have taken more photos showing the vehicles blocking the fire exit of our building. This has been happening consistently for the past two weeks, and I'm concerned about safety violations.
+
+I've attached the photos to this email for your review. The license plate numbers are clearly visible in the images.
+
+Please let me know if you need any additional information from my end.
+
+Thank you for your assistance.
+
+Best regards,
+Maria Santos
+Contact: 0917-123-4567`
+        },
+        3: {
+          sender: "Roberto Lopez",
+          email: "roberto.lopez@email.com",
+          subject: "Thank you - Case #2024-003",
+          date: "December 25, 2024 - 3:45 PM",
+          caseId: "2024-003",
+          content: `Good afternoon,
+
+Thank you for resolving my complaint about the street lighting on Rizal Boulevard (Case #2024-003).
+
+The broken streetlights have been repaired, and the area is now well-lit during nighttime. This has significantly improved the safety of residents walking in the area, especially for students and workers coming home late.
+
+I appreciate the quick response and efficient service from your office. It's reassuring to know that our barangay takes citizen complaints seriously.
+
+Keep up the excellent work!
+
+Best regards,
+Roberto Lopez
+Contact: 0905-987-6543`
+        },
+        4: {
+          sender: "Ana Bautista",
+          email: "ana.bautista@email.com",
+          subject: "Urgent: Stray Dogs - Case #2024-004",
+          date: "December 28, 2024 - 11:15 AM",
+          caseId: "2024-004",
+          content: `URGENT MESSAGE
+
+This is urgent. The stray dogs in our area are becoming more aggressive, and I'm concerned for my family's safety, especially my young children.
+
+Yesterday, a pack of 5-6 stray dogs chased my 8-year-old daughter while she was walking home from school. She was terrified and had to seek shelter in a neighbor's house.
+
+The situation is getting worse, and I fear someone might get seriously injured. These dogs appear to be sick and malnourished, which makes them more unpredictable.
+
+Please prioritize this case and coordinate with animal control services immediately. I am willing to provide additional details or assistance as needed.
+
+I look forward to your urgent response.
+
+Ana Bautista
+Contact: 0923-456-7890
+Address: 123 Cattleya Street, LM Subdivision`
+        },
+        5: {
+          sender: "Carlos Garcia",
+          email: "carlos.garcia@email.com",
+          subject: "Additional Information - Case #2024-005",
+          date: "December 21, 2024 - 9:20 AM",
+          caseId: "2024-005",
+          content: `Good morning,
+
+I have some additional information that might help with the investigation of my complaint about illegal dumping (Case #2024-005).
+
+I was able to identify the vehicle used for dumping waste in our area. It's a white pickup truck with plate number ABC-1234. I've seen this vehicle multiple times during late evening hours (around 10-11 PM).
+
+I also spoke with other residents who witnessed the same incident. Mrs. Elena Reyes (contact: 0918-555-0123) and Mr. Pedro Vasquez (contact: 0932-111-2345) are willing to provide witness statements if needed.
+
+The dumping usually happens near the old basketball court on Road 4, Ibaba. The accumulated waste is becoming a health hazard for our community.
+
+Please let me know how we can proceed with this case.
+
+Thank you.
+
+Carlos Garcia
+Contact: 0929-876-5432`
+        }
+      };
+
+      function toggleMobileMenu(menu) {
+        menu.classList.toggle("open");
+        document.querySelector(".mobile-menu").classList.toggle("open");
+      }
+
+      function openMessage(messageId) {
+        const message = messages[messageId];
+        if (!message) return;
+
+        document.getElementById('modalTitle').textContent = 'Message Details';
+        document.getElementById('modalSender').textContent = message.sender;
+        document.getElementById('modalSubject').textContent = message.subject;
+        document.getElementById('modalDate').textContent = message.date;
+        document.getElementById('modalCaseId').textContent = message.caseId;
+        document.getElementById('modalContent').innerHTML = message.content.replace(/\n/g, '<br>');
+
+        // Store current message data for reply
+        window.currentMessage = message;
+
+        // Show modal
+        document.getElementById('messageModal').style.display = 'block';
+        document.body.style.overflow = 'hidden';
+
+        // Remove unread indicator if present
+        const messageRow = event.currentTarget;
+        const unreadIndicator = messageRow.querySelector('.unread-indicator');
+        if (unreadIndicator) {
+          unreadIndicator.remove();
+        }
+      }
+
+      function closeMessage() {
+        document.getElementById('messageModal').style.display = 'none';
+        document.body.style.overflow = 'auto';
+      }
+
+      function showFeedback() {
+        document.getElementById('feedbackModal').style.display = 'block';
+      }
+
+      function closeFeedback() {
+        document.getElementById('feedbackModal').style.display = 'none';
+        closeMessage();
+      }
+
+      // Close modal when clicking outside
+      document.getElementById('messageModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+          closeMessage();
+        }
+      });
+
+      document.getElementById('feedbackModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+          closeFeedback();
+        }
+      });
+
+      // Close modal with Escape key
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          const messageModal = document.getElementById('messageModal');
+          const feedbackModal = document.getElementById('feedbackModal');
+          
+          if (feedbackModal.style.display === 'block') {
+            closeFeedback();
+          } else if (messageModal.style.display === 'block') {
+            closeMessage();
+          }
+        }
+      });
+
+      // Highlight active nav link
+      document.addEventListener('DOMContentLoaded', function() {
+        const currentUrl = window.location.href;
+        const navLinks = document.querySelectorAll('.nav-list a');
+
+        navLinks.forEach(link => {
+          if (currentUrl.includes(link.getAttribute('href')) || link.textContent.trim() === 'Message') {
+            link.classList.add('active');
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

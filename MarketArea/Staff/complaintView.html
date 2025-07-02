@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Complaint View | Barangay Market Area</title>
+  <link rel="icon" href="files/logo.png" type="image/png" />
+  <link rel="stylesheet" href="complaintview.css" />
+
+ 
+</head>
+<body>
+  <header>
+    <div style="display: flex; align-items: center;">
+      <img src="files/logo.png" alt="Barangay Logo">
+      <div style="margin-left: 10px;">
+        <div><strong>Barangay Market Area:</strong></div>
+        <div>Complaint System</div>
+      </div>
+    </div>
+    <nav>
+      <a href="staffHomepage.html" onclick="scrollToTop(event)">Home</a>
+      <a href="manageComplaints.html">Manage Complaints</a>
+      <a href="quickMetrics.html">Quick Metrics</a>
+      <div class="profile-container">
+        <div class="profile-circle" onclick="toggleDropdown()"></div>
+        <div class="dropdown-menu" id="dropdownMenu">
+          <a href="staffProf.html"><img src="files/profile.png" alt="Profile Icon">Profile</a>
+          <a href="#"onclick="openNotifFromDropdown(event)"><img src="files/notif.png" alt="Notifications Icon">Notifications</a>
+          <a href="settings.html"><img src="files/settings.png" alt="Settings Icon">Settings</a>
+          <a href="#" onclick="return confirmLogout()"><img src="files/logout.png" alt="Logout Icon">Logout</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <div class="form-container">
+    <div class="row">
+      <div class="info">
+        <p><strong>Date Filed:</strong> 03/03/25</p>
+        <p><strong>Name:</strong> Juan De Luna</p>
+        <p><strong>Age:</strong> 31</p>
+        <p><strong>Gender:</strong> Male</p>
+        <p><strong>Address:</strong> blablabla</p>
+        <p><strong>Contact:</strong> 09178920304</p>
+        <p><strong>Email:</strong> juandeluna@gmail.com</p>
+      </div>
+      <img src="https://via.placeholder.com/150" class="photo" alt="ID Photo">
+    </div>
+
+
+
+    <div class="section"> 
+      <p><strong>Type of Complaint:</strong> Noise</p>
+      <p><strong>Date and Time of Incident:</strong> 03/02/25, 2:00am</p>
+      <p><strong>Location of Incident:</strong> Rawr Street, ABC</p>
+      <p><strong>Description:</strong></p>
+      <textarea class="desc-box" disabled>This is a description of the noise incident...</textarea>
+
+      <p><strong>Photo, Video, or Screenshot Evidence (Optional):</strong></p>
+      <div class="evidence">
+        <img src="https://via.placeholder.com/100" alt="Evidence 1">
+        <img src="https://via.placeholder.com/100" alt="Evidence 2">
+        <img src="https://via.placeholder.com/100" alt="Evidence 3">
+      </div>
+    </div>
+
+      <div class="section">
+        <p class="optional">(Optional)</p>
+        <p><strong>Witness Details:</strong></p>
+        <p><strong>Name:</strong> </p>
+        <p><strong>Contact:</strong> </p>
+      </div>
+
+      <div class="bottom-section">
+        <p><strong>Schedule of Appointment:</strong> Date, Time</p>
+        <p><strong>Assigned to:</strong> (staff name)</p>
+      </div>
+  </div>
+
+
+
+  <footer>
+    <div class="footer-section">
+      <div class="leftside">
+        <img src="files/logo.png" alt="Barangay Logo" />
+        <p>
+          Brgy. Market Area in Sta. Rosa, Laguna is a vibrant urban community known for its public market, 
+          transport terminals, and local businesses—serving as a key center of commerce and daily activity.
+        </p>
+      </div>
+    </div>
+    <div class="footer-section2">
+      <h4>Quick Menu</h4>
+      <ul>
+        <li><a href="staffHomepage.html">Home</a></li>
+        <li><a href="manageComplaints.html">Manage Complaint</a></li>
+        <li><a href="quickMetrics.html">Quick Metrics</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <!-- === CUSTOM LOGOUT MODAL === -->
+<div id="logoutModal" class="custom-modal">
+  <div class="modal-content">
+    <p><strong>Are you sure you want to logout?</strong></p>
+    <div class="modal-buttons">
+      <button class="confirm-btn" onclick="confirmLogoutAction()">Yes, Logout</button>
+      <button class="cancel-btn" onclick="closeLogoutModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+  <!-- === NOTIFICATION POPUP START === -->
+  <div id="notifPopup" class="notification-popup">
+    <div class="popup-header">
+      Notifications
+      <span onclick="closeNotifPopup()">×</span>
+    </div>
+    <div class="popup-section">
+      <h5>Today</h5>
+      <div class="notif-item" onclick="window.location.href='complaintApprovalAction.html'">
+        Juan Dela Cruz submitted a noise complaint.
+      </div>
+      <div class="notif-item" onclick="window.location.href='complaintApprovalAction.html'">
+        Angela Reyes submitted a sanitation complaint.
+      </div>
+    </div>
+    <div class="popup-section">
+      <h5>This Week</h5>
+      <div class="notif-item" onclick="window.location.href='complaintApprovalAction.html'">
+        Carlo Santos submitted a vending complaint.
+      </div>
+      <div class="notif-item" onclick="window.location.href='complaintApprovalAction.html'">
+        Ana Lim reported a dispute with a neighbor.
+      </div>
+    </div>
+  </div>
+  <!-- === NOTIFICATION POPUP END === -->
+
+
+
+  <script>
+    function toggleDropdown() {
+      const menu = document.getElementById('dropdownMenu');
+      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    }
+
+    window.onclick = function (event) {
+      if (!event.target.closest('.profile-container')) {
+        const dropdown = document.getElementById('dropdownMenu');
+        if (dropdown) dropdown.style.display = 'none';
+      }
+    }
+
+    function scrollToTop(event) {
+      event.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+
+    function toggleDropdown() {
+      const dropdown = document.getElementById('dropdownMenu');
+      const notif = document.getElementById('notifPopup');
+      notif.style.display = 'none'; // hide notif popup
+      dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function openNotifFromDropdown(event) {
+      event.preventDefault();
+      document.getElementById('dropdownMenu').style.display = 'none'; // close dropdown
+      document.getElementById('notifPopup').style.display = 'flex'; // open notif
+    }
+
+    function closeNotifPopup() {
+      document.getElementById('notifPopup').style.display = 'none';
+    }
+
+    // Close everything on outside click
+    window.onclick = function (e) {
+      if (!e.target.closest('.profile-container') && !e.target.closest('.notification-popup')) {
+        document.getElementById('dropdownMenu').style.display = 'none';
+        closeNotifPopup();
+      }
+    }        
+
+        /*TERMS AND CONDITION*/
+    function openTerms(event) {
+      event.preventDefault();
+      document.getElementById('termsModal').style.display = 'flex';
+    }
+
+    function closeTerms() {
+      document.getElementById('termsModal').style.display = 'none';
+    }
+
+    // Open modal
+    function openModal() {
+      document.getElementById("termsModal").style.display = "block";
+    }
+
+    // Close modal
+    function closeModal() {
+      document.getElementById("termsModal").style.display = "none";
+    }
+
+    // ==========================
+    // NOTIFICATION FUNCTIONALITY
+    // ==========================
+
+    function openNotifFromDropdown(event) {
+      event.preventDefault();
+      document.getElementById('dropdownMenu').style.display = 'none';
+      document.getElementById('notifPopup').style.display = 'flex';
+    }
+
+    function toggleDropdown() {
+      const dropdown = document.getElementById('dropdownMenu');
+      const notif = document.getElementById('notifPopup');
+      notif.style.display = 'none';
+      dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function closeNotifPopup() {
+      document.getElementById('notifPopup').style.display = 'none';
+    }
+
+    function scrollToTop(event) {
+      event.preventDefault();
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+
+    // Modal functionality (Terms & Conditions)
+    function openModal() {
+      document.getElementById("termsModal").style.display = "block";
+    }
+
+    function closeModal() {
+      document.getElementById("termsModal").style.display = "none";
+    }
+
+    // Close modal or dropdown when clicking outside
+    window.onclick = function (event) {
+      const modal = document.getElementById("termsModal");
+      if (event.target == modal) {
+        closeModal();
+      }
+
+      if (!event.target.closest('.profile-container') && !event.target.closest('.notification-popup')) {
+        document.getElementById('dropdownMenu').style.display = 'none';
+        closeNotifPopup();
+      }
+    }
+    
+function confirmLogout() {
+  document.getElementById('logoutModal').style.display = 'flex';
+  return false; // Prevent the <a> tag from redirecting
+}
+
+function closeLogoutModal() {
+  document.getElementById('logoutModal').style.display = 'none';
+}
+
+function confirmLogoutAction() {
+  window.location.href = "staffLogin.html"; // ✅ your original destination
+};
+
+  </script>
+</body>
+</html>

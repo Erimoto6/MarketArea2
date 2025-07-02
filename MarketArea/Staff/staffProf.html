@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Barangay Market Area: E-Blotter System</title>
+  <link rel="icon" href="files/logo.png" type="image/png" />
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+    }
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6); /* adjust the color & transparency */
+  z-index: -1;
+}
+
+
+    header {
+      position: sticky;
+      top: 0;
+      background-color: #2e3b0d;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 30px;
+      z-index: 1000;
+    }
+
+    header img {
+      height: 60px;
+      margin-right: 10px;
+    }
+
+    header nav {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    header nav a {
+      color: white;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .profile-container {
+      position: relative;
+    }
+
+    .profile-circle {
+      background: #ccc;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 40px;
+      background-color: white;
+      color: black;
+      min-width: 170px;
+      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+      z-index: 10;
+      border-radius: 4px;
+    }
+
+    .dropdown-menu a {
+      color: black;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      gap: 10px;
+    }
+
+    .dropdown-menu a:hover {
+      background-color: #f1f1f1;
+    }
+
+    .dropdown-menu a img {
+      width: 20px;
+      height: 20px;
+    }
+
+    .main-banner {
+      position: relative;
+      height: 90vh;
+      text-align: center;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .main-banner::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background: url('files/marketareabg.jpg') no-repeat center center/cover;
+      z-index: 0;
+    }
+
+    .main-banner::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1;
+    }
+
+    .main-banner h1,
+    .main-banner p {
+      position: relative;
+      z-index: 2;
+    }
+
+    .page-container {
+      position: relative;
+      z-index: 2;
+      padding: 60px 40px;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .profile-box {
+      background-color: white;
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      display: flex;
+      width: 100%;
+      max-width: 1100px;
+      overflow: hidden;
+      min-height: 500px;
+    }
+
+    .sidebar_body {
+      width: 280px;
+      border-right: 1px solid #ccc;
+      background: #f8f8f8;
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .profile-pic {
+      position: relative;
+      margin-bottom: 30px;
+    }
+
+    .circle-img {
+      width: 130px;
+      height: 130px;
+      background-color: #ddd;
+      border-radius: 50%;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .camera-wrapper {
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+      background: white;
+      border-radius: 50%;
+      padding: 5px;
+      border: 1px solid #ccc;
+      cursor: pointer;
+    }
+
+    .camera-icon {
+      font-size: 16px;
+    }
+
+    .tooltip-text {
+      position: absolute;
+      top: -25px;
+      right: -20px;
+      background: black;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 5px;
+      font-size: 10px;
+      display: none;
+    }
+
+    .camera-wrapper:hover .tooltip-text {
+      display: block;
+    }
+
+    .sidebar-links {
+      padding: 12px 15px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      width: 100%;
+      text-align: center;
+      justify-content: center;
+    }
+
+    .sidebar-links.active {
+      background-color: #2e3b0d;
+      color: white;
+    }
+
+    .profile-form {
+      flex: 1;
+      padding: 40px;
+    }
+
+    .profile-form h2 {
+      margin-top: 0;
+      color: #2e3b0d;
+    }
+
+    form input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 20px;
+    }
+
+    .form-row input {
+      flex: 1;
+    }
+
+    .form-buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 15px;
+    }
+
+    .discard-btn,
+    .save-btn {
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .discard-btn {
+      background-color: white;
+      color: #2e3b0d;
+      border: 1px solid #2e3b0d;
+    }
+
+    .save-btn {
+      background-color: #2e3b0d;
+      color: white;
+    }
+
+    .save-btn:hover,
+    .discard-btn:hover {
+      opacity: 0.9;
+    }
+
+    footer {
+      background-color: #333;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      padding: 20px 30px;
+      font-size: 0.9rem;
+      flex-wrap: wrap;
+    }
+
+    footer .leftside {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      max-width: 500px;
+      margin-top: 10px;
+    }
+
+    footer img {
+      margin-right: 25px;
+      margin-left: 10px;
+      height: 100px;
+    }
+
+    footer .footer-section1 {
+      max-width: 200px;
+      margin-right: 0;
+    }
+
+    footer .footer-section2 {
+      max-width: 200px;
+      margin-right: 100px;
+    }
+
+    footer h4 {
+      margin-bottom: 10px;
+    }
+
+    footer ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    footer ul li {
+      margin-bottom: 8px;
+    }
+
+    footer ul li a {
+      color: white;
+      text-decoration: none;
+    }
+
+    /* === NOTIFICATION POPUP === */
+    .notification-popup {
+      position: fixed;
+      top: 80px;
+      right: 30px;
+      width: 320px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+      z-index: 999;
+      display: none;
+      flex-direction: column;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .notification-popup .popup-header {
+      background: #2e3b0d;
+      color: white;
+      padding: 12px 16px;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .notification-popup .popup-header span {
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .notification-popup .popup-section {
+      padding: 10px 16px;
+    }
+
+    .notification-popup .popup-section h5 {
+      margin: 10px 0 5px;
+      font-size: 14px;
+      color: #888;
+    }
+
+    .notification-popup .notif-item {
+      padding: 8px 0;
+      border-bottom: 1px solid #eee;
+      font-size: 14px;
+      cursor: pointer;
+      color: #2e3b0d;
+    }
+
+    .notification-popup .notif-item:last-child {
+      border-bottom: none;
+    }
+
+    .notification-popup .notif-item:hover {
+      background-color: #f8f8f8;
+    }
+
+    /* === MODAL STYLES FOR TERMS POPUP === */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      margin-top: 50px;      
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 5% auto;
+      padding: 0;
+      border-radius: 10px;
+      width: 80%;
+      max-width: 600px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+
+    .modal-scrollable {
+        padding: 5px 20px;
+        max-height: 70vh;
+        overflow-y: auto;
+        overflow-x: hidden;
+        position: relative;
+    }
+
+    .modal-scrollable h2 {
+      text-align: center;
+      color: #4B5320;
+      margin-top: 0px;
+    }
+
+    .modal-scrollable h3 {
+      color: #BF8C00;
+      margin-top: 1em;
+    }
+
+    .close {
+        display: block;
+        text-align: right;
+        margin-right: 10px; /* 🟢 moves it to the left of the scrollbar */
+        margin-top: 0px;
+        font-size: 24px;
+        font-weight: bold;
+        color: #aaa;
+        cursor: pointer;
+    }
+
+    .close:hover {
+        color: black;
+    }
+
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }    
+
+.custom-modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  justify-content: center;
+  align-items: center;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.modal-content {
+  background-color: #fff;
+  border: 3px solid #556B2F;
+  padding: 25px 30px;
+  border-radius: 12px;
+  text-align: center;
+  max-width: 400px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.modal-content p {
+  font-size: 18px;
+  margin-bottom: 25px;
+  color: #2e3b0d;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.confirm-btn,
+.cancel-btn {
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.confirm-btn {
+  background-color: #2e3b0d;
+  color: white;
+}
+
+.confirm-btn:hover {
+  background-color: #3c4f1a;
+}
+
+.cancel-btn {
+  background-color: #ccc;
+  color: #333;
+}
+
+.cancel-btn:hover {
+  background-color: #b2b2b2;
+}
+
+  </style>
+</head>
+
+<body>
+  <header>
+    <div style="display: flex; align-items: center;">
+      <img src="files/logo.png" alt="Barangay Logo">
+      <div style="margin-left: 10px;">
+        <div><strong>Barangay Market Area:</strong></div>
+        <div>Complaint System</div>
+      </div>
+    </div>
+
+    <nav>
+      <a href="staffHomepage.html">Home</a>
+      <a href="manageComplaints.html">Manage Complaints</a>
+      <a href="quickMetric.html">Quick Metrics</a>
+      <div class="profile-container">
+        <div class="profile-circle" onclick="toggleDropdown()"></div>
+        <div class="dropdown-menu" id="dropdownMenu">
+          <a href="staffProf.html"><img src="files/profile.png" alt="Profile Icon">Profile</a>
+          <a href="#"onclick="openNotifFromDropdown(event)"><img src="files/notif.png" alt="Notifications Icon">Notifications</a>
+          <a href="settings.html"><img src="files/settings.png" alt="Settings Icon">Settings</a>
+          <a href="#" onclick="return confirmLogout()"><img src="files/logout.png" alt="Logout Icon">Logout</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <section class="main-banner">
+    <div class="page-container">
+      <div class="profile-container">
+        <div class="profile-box">
+          <div class="sidebar_body">
+            <div class="profile-pic">
+              <label for="profileUpload">
+                <div class="circle-img" id="profilePreview"></div>
+                <div class="camera-wrapper">
+                  <div class="camera-icon">📷</div>
+                  <span class="tooltip-text">Edit profile photo</span>
+                </div>
+              </label>
+              <input type="file" id="profileUpload" accept="image/*" style="display: none;">
+            </div>
+            <div class="sidebar-links active">
+              <span>👤</span> Personal Information
+            </div>
+          </div>
+
+          <div class="profile-form">
+            <h2>Personal Information</h2>
+            <form>
+              <div class="form-row">
+                <input type="text" placeholder="First Name">
+                <input type="text" placeholder="Last Name">
+              </div>
+              <input type="email" placeholder="Email Address">
+              <input type="text" placeholder="Address">
+              <div class="form-row">
+                <input type="text" placeholder="Contact Number">
+                <input type="date" placeholder="Date of Birth">
+              </div>
+              <div class="form-buttons">
+                <button type="button" class="discard-btn">Discard changes</button>
+                <button type="submit" class="save-btn">Save changes</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div> <!-- ✅ This closes .page-container -->
+  </section>
+
+  <footer>
+    <div class="footer-section">
+      <div class="leftside">
+        <img src="files/logo.png" alt="Barangay Logo" /><br />
+        <p>
+          The Market Area of Sta. Rosa, Laguna is a bustling center of commerce and community activity. Known for its
+          public market, transport terminals, and small businesses, it serves as a vital hub for daily essentials,
+          local trade, and public services—connecting residents from different barangays across the city.
+        </p>
+      </div>
+    </div>
+    <div class="footer-section1">
+      <h4>Quick Menu</h4>
+      <ul>
+        <li><a href="staffHomepage.html">Home</a></li>
+        <li><a href="manageComplaints.html">Manage Complaint</a></li>
+        <li><a href="quickMetric.html">Quick Metrics</a></li>
+      </ul>
+    </div>
+
+  </footer>
+
+  <div id="logoutModal" class="custom-modal">
+  <div class="modal-content">
+    <p><strong>Are you sure you want to logout?</strong></p>
+    <div class="modal-buttons">
+      <button class="confirm-btn" onclick="confirmLogoutAction()">Yes, Logout</button>
+      <button class="cancel-btn" onclick="closeLogoutModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+
+  <!-- === NOTIFICATION POPUP START === -->
+  <div id="notifPopup" class="notification-popup">
+    <div class="popup-header">
+      Notifications
+      <span onclick="closeNotifPopup()">×</span>
+    </div>
+    <div class="popup-section">
+      <h5>Today</h5>
+      <div class="notif-item" onclick="alert('Go to complaint #001')">Juan dela Cruz submitted a noise complaint.</div>
+      <div class="notif-item" onclick="alert('Go to resolved complaint #002')">A case was marked as resolved.</div>
+    </div>
+    <div class="popup-section">
+      <h5>This Week</h5>
+      <div class="notif-item" onclick="alert('Go to garbage complaint #003')">Garbage issue updated by staff.</div>
+      <div class="notif-item" onclick="alert('Go to water complaint #004')">Water leak concern reopened.</div>
+    </div>
+  </div>
+  <!-- === NOTIFICATION POPUP END === -->
+
+  <!-- === TERMS & CONDITIONS MODAL START === -->
+    <div id="termsModal" class="modal-overlay">
+      <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>  
+        <div class="modal-scrollable">
+          <h2>Terms and Conditions</h2>
+          <p>Welcome to the Barangay E-Blotter System. By accessing or using this system, you agree to comply with and be bound by the following terms and conditions. Please read them carefully.</p>
+
+          <h3>1. Use of the System</h3>
+          <ul>
+            <li>The E-Blotter System is intended for residents to file and track complaints within the barangay.</li>
+            <li>You must provide accurate and complete information when submitting a complaint.</li>
+            <li>Misuse of the system, including submitting false or malicious complaints, is strictly prohibited.</li>
+          </ul>
+
+          <h3>2. Privacy and Confidentiality</h3>
+          <ul>
+            <li>All personal information submitted will be kept confidential and used only for resolving complaints.</li>
+            <li>Only authorized barangay personnel have access to complaint details.</li>
+          </ul>
+
+          <h3>3. User Responsibilities</h3>
+          <ul>
+            <li>You are responsible for the accuracy of the information you provide.</li>
+            <li>You must not use the system for unlawful purposes or to harass others.</li>
+          </ul>
+
+          <h3>4. System Availability</h3>
+          <ul>
+            <li>The barangay strives to keep the system available at all times but does not guarantee uninterrupted access.</li>
+            <li>Maintenance or technical issues may cause temporary downtime.</li>
+          </ul>
+
+          <h3>5. Changes to Terms</h3>
+          <ul>
+            <li>The barangay reserves the right to update these terms at any time. Changes will be posted on this page.</li>
+          </ul>
+
+          <h3>6. Contact</h3>
+          <p>For questions or concerns, contact the Barangay Office at (012) 345-6789 or email <a href="mailto:barangayeblotter@email.com">barangayeblotter@email.com</a>.</p>
+        </div>
+      </div>
+    </div>
+  <!-- === TERMS & CONDITIONS MODAL END === -->
+
+  <script>
+    function toggleDropdown() {
+      const menu = document.getElementById('dropdownMenu');
+      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    }
+
+    window.onclick = function (event) {
+      if (!event.target.closest('.profile-container')) {
+        const dropdown = document.getElementById('dropdownMenu');
+        if (dropdown) dropdown.style.display = 'none';
+      }
+    }
+
+    function scrollToTop(event) {
+      event.preventDefault();
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+
+    function toggleDropdown() {
+      const dropdown = document.getElementById('dropdownMenu');
+      const notif = document.getElementById('notifPopup');
+      notif.style.display = 'none'; // hide notif popup
+      dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function openNotifFromDropdown(event) {
+      event.preventDefault();
+      document.getElementById('dropdownMenu').style.display = 'none'; // close dropdown
+      document.getElementById('notifPopup').style.display = 'flex'; // open notif
+    }
+
+    function closeNotifPopup() {
+      document.getElementById('notifPopup').style.display = 'none';
+    }
+
+    // Close everything on outside click
+    window.onclick = function (e) {
+      if (!e.target.closest('.profile-container') && !e.target.closest('.notification-popup')) {
+        document.getElementById('dropdownMenu').style.display = 'none';
+        closeNotifPopup();
+      }
+    }
+
+    /*TERMS AND CONDITION*/
+    function openTerms(event) {
+      event.preventDefault();
+      document.getElementById('termsModal').style.display = 'flex';
+    }
+
+    function closeTerms() {
+      document.getElementById('termsModal').style.display = 'none';
+    }
+
+    // Open modal
+    function openModal() {
+      document.getElementById("termsModal").style.display = "block";
+    }
+
+    // Close modal
+    function closeModal() {
+      document.getElementById("termsModal").style.display = "none";
+    }
+
+function confirmLogout() {
+  document.getElementById('logoutModal').style.display = 'flex';
+  return false; // Prevent the <a> tag from redirecting
+}
+
+function closeLogoutModal() {
+  document.getElementById('logoutModal').style.display = 'none';
+}
+
+function confirmLogoutAction() {
+  window.location.href = "staffLogin.html"; // ✅ your original destination
+};
+
+  </script>
+</body>
+</html> 

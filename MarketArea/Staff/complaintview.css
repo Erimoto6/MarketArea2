@@ -1,0 +1,435 @@
+
+    /* Base Reset and Font */
+    * {
+      margin: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      font-family: Arial, sans-serif;
+      height: 100%;
+      overflow-x: hidden;
+    }
+
+    /* Background Image + Overlay */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('files/marketareabg.jpg') no-repeat center center;
+      background-size: cover;
+      background-attachment: fixed;
+      z-index: -2;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: -1;
+    }
+
+    /* Sticky Header */
+    header {
+      position: sticky;
+      top: 0;
+      background-color: #2e3b0d;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 30px;
+      z-index: 1000;
+    }
+
+    header img {
+      height: 60px;
+      margin-right: 10px;
+    }
+
+    header nav {
+      display: flex;
+      align-items: center;
+    }
+
+    header nav a {
+      color: white;
+      text-decoration: none;
+      cursor: pointer;
+      padding: 8px 16px;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+    }
+
+    header nav a:hover {
+      background-color: rgba(255,255,255,0.1);
+    }
+
+
+    .profile-container {
+      position: relative;
+    }
+
+    .profile-circle {
+      background: #ccc;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      margin-left: 10px;          
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 40px;
+      background-color: white;
+      color: black;
+      min-width: 170px;
+      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+      z-index: 10;
+      border-radius: 4px;
+    }
+
+    .dropdown-menu a {
+      color: black;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      gap: 10px;
+    }
+
+    .dropdown-menu a:hover {
+      background-color: #f1f1f1;
+    }
+
+    .dropdown-menu a img {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* Complaint Form Styling */
+    .form-container {
+      max-width: 1000px;
+      margin: 50px auto;
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 40px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .form-container p {
+      margin-bottom: 12px;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+
+    .photo {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border: 1px solid #aaa;
+    }
+
+    .info {
+      flex: 1;
+    }
+
+    .section {
+      margin-top: 30px;
+      border-top: 1px solid #aaa;
+      padding-top: 20px;
+    }
+
+    .desc-box {
+      width: 100%;
+      height: 80px;
+      margin-top: 10px;
+      resize: none;
+      padding: 10px;
+      background-color: #eee;
+      border: 1px solid #ccc;
+      color: #444;
+    }
+
+    .evidence {
+      display: flex;
+      justify-content: center; /* center horizontally */
+      gap: 40px;
+      margin-top: 15px;
+      flex-wrap: wrap;
+    }
+
+    .evidence img {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      border: 1px solid #999;
+    }
+
+    .optional {
+      text-align: center;
+      font-style: italic;
+      margin: 20px 0 10px;
+    }
+
+    .bottom-section {
+      margin-top: 30px;
+      border-top: 1px solid #aaa;
+      padding-top: 20px;
+    }
+
+    /* Footer */
+    footer {
+      background-color: #333;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      padding: 20px 30px;
+      font-size: 0.9rem;
+      flex-wrap: wrap;
+    }
+
+    footer .leftside {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      max-width: 500px;
+      margin-top: 10px;
+    }
+
+    footer img {
+      margin-right: 25px;
+      margin-left: 10px;
+      height: 100px;
+    }
+
+
+    footer .footer-section2 {
+      max-width: 200px;
+      margin-right: 100px;
+    }
+
+    footer h4 {
+      margin-bottom: 10px;
+    }
+
+    footer ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    footer ul li {
+      margin-bottom: 8px;
+    }
+
+    footer ul li a {
+      color: white;
+      text-decoration: none;
+    }
+
+    /* === NOTIFICATION POPUP === */
+    .notification-popup {
+      position: fixed;
+      top: 80px;
+      right: 30px;
+      width: 320px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+      z-index: 999;
+      display: none;
+      flex-direction: column;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .notification-popup .popup-header {
+      background: #2e3b0d;
+      color: white;
+      padding: 12px 16px;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .notification-popup .popup-header span {
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .notification-popup .popup-section {
+      padding: 10px 16px;
+    }
+
+    .notification-popup .popup-section h5 {
+      margin: 10px 0 5px;
+      font-size: 14px;
+      color: #888;
+    }
+
+    .notification-popup .notif-item {
+      padding: 8px 0;
+      border-bottom: 1px solid #eee;
+      font-size: 14px;
+      cursor: pointer;
+      color: #2e3b0d;
+    }
+
+    .notification-popup .notif-item:last-child {
+      border-bottom: none;
+    }
+
+    .notification-popup .notif-item:hover {
+      background-color: #f8f8f8;
+    }
+
+    /* === MODAL STYLES FOR TERMS POPUP === */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      margin-top: 50px;      
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 5% auto;
+      padding: 0;
+      border-radius: 10px;
+      width: 80%;
+      max-width: 600px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+
+    .modal-scrollable {
+        padding: 5px 20px;
+        max-height: 70vh;
+        overflow-y: auto;
+        overflow-x: hidden;
+        position: relative;
+    }
+
+    .modal-scrollable h2 {
+      text-align: center;
+      color: #4B5320;
+      margin-top: 0px;
+    }
+
+    .modal-scrollable h3 {
+      color: #BF8C00;
+      margin-top: 1em;
+    }
+
+    .close {
+        display: block;
+        text-align: right;
+        margin-right: 10px; /* 🟢 moves it to the left of the scrollbar */
+        margin-top: 0px;
+        font-size: 24px;
+        font-weight: bold;
+        color: #aaa;
+        cursor: pointer;
+    }
+
+    .close:hover {
+        color: black;
+    }
+
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }    
+        
+  .custom-modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  justify-content: center;
+  align-items: center;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.modal-content {
+  background-color: #fff;
+  border: 3px solid #556B2F;
+  padding: 25px 30px;
+  border-radius: 12px;
+  text-align: center;
+  max-width: 400px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.modal-content p {
+  font-size: 18px;
+  margin-bottom: 25px;
+  color: #2e3b0d;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.confirm-btn,
+.cancel-btn {
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.confirm-btn {
+  background-color: #2e3b0d;
+  color: white;
+}
+
+.confirm-btn:hover {
+  background-color: #3c4f1a;
+}
+
+.cancel-btn {
+  background-color: #ccc;
+  color: #333;
+}
+
+.cancel-btn:hover {
+  background-color: #b2b2b2;
+}

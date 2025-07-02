@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+  	<meta charset="utf-8">
+  	<meta name="viewport" content="initial-scale=1, width=device-width">
+  	
+  	<link rel="stylesheet"  href="styleRHP.css" />
+  	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=K2D:wght@300;500;800&display=swap" />
+  	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas Neue:wght@400&display=swap" />
+  	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;800&display=swap" />
+  	
+  	
+</head>
+<body>
+  	<div class="page-container">
+  	<div class="written-complaint-appointmen">
+
+
+		<!-- HEADER SECTION -->
+		<header class="header_gradient">
+  			<div class="header-left">
+    			<img class="market-area-logo" src="logo.png" alt="Logo" />
+    			<div class="barangay-title">
+      			<p class="barangay-market-area">barangay market area:</p>
+      			<p class="barangay-market-area">Complaint system</p>
+    			</div>
+  			</div>
+
+  			<div class="navbar">
+  				<div class="nav-links">
+    				<a href="residentHomepage.html">Home</a>
+    				<a href="my_complaints.html">My Complaints</a>
+    				<a href="contact.html">Contacts</a>
+  				</div>
+
+  			<!-- Profile + Sidebar Wrapper -->
+			<div class="profile-sidebar-wrapper">
+  			<!-- Profile Trigger -->
+  			<div class="profile-link" id="profileTrigger">
+    			<div class="profile"></div>
+  			</div>
+
+  			<!-- Collapsible Sidebar -->
+  			<div class="sidebar collapsed" id="profileSidebar">
+				<a href="#" class="sidebar-item">
+      				<i class="icon">👤</i>
+      				<span class="label">Profile</span>
+    			</a>
+    			<a href="#" class="sidebar-item">
+      				<i class="icon">⚙️</i>
+      				<span class="label">Settings</span>
+				</a>
+    			<a href="#" class="sidebar-item">
+      				<i class="icon">🔐</i>
+      				<span class="label">Account & Security</span>
+				</a>
+    			<a href="residentLogin.html" class="sidebar-item" id="logout-btn">
+  					<i class="icon">⏻</i>
+  					<span class="label">Logout</span>
+				</a>
+  			</div>
+		</div>
+
+
+			</div>
+		</header>
+
+		<!-- HERO SECTION -->
+		<section class="hero-section">
+  			<div class="background-circles">
+    			<div class="market_area_bg"></div>
+    			<div class="green_circle"></div>
+    			<div class="yellow_circle"></div>
+  			</div>
+
+  			<div class="hero-content">
+    			<div class="welcome-to-barangay">
+      				Welcome to barangay market area:<br> e-BLOTTER system
+    			</div>
+			
+			<a href="complaint_form.html">
+    		<button class="file_complaint_container" type="button" aria-label="File a Complaint">
+  				<div class="file_complaint_button"></div>
+  				<div class="file_complaint_icon"></div>
+  				<img class="file_complaint_iconimg" src="filing_icon.png" alt="Complaint Icon" />
+
+  				<div class="file-a-complaint-parent">
+    			<div class="file-a-complaint">File a Complaint</div>
+    			<div class="submit-and-track">
+      				Submit and track your concerns directly to barangay officials. Stay informed, stay heard.
+    			</div>
+  				</div>
+			</button>
+			</a>
+      		</div>
+    		</div>
+  			</div>
+		</section>
+
+
+		<!--FOOTER SECTION-->
+			<footer class="footer">
+  				<div class="footer-left">
+    				<img class="market-area-logo2" src="logo.png" alt="Barangay Logo" />
+    				<p class="a-barangay-that">
+      					A Barangay that is God-centered, united, service-oriented, inclusive, and responsive — guided by faith, integrity, and accountable governance.
+    				</p>
+  				</div>
+
+  				<div class="footer">
+  			<!-- Any left/center content here -->
+
+  			<div class="footer-right-group">
+    			<div class="footer-middle">
+      				<h4 class="footer-heading">Other Services</h4>
+      				<p class="footer-link">Insert Site</p>
+      				<p class="footer-link">Insert Site</p>
+      				<p class="footer-link">Insert Site</p>
+    			</div>
+
+    		<div class="footer-right">
+      			<h4 class="footer-heading">Gov't Info</h4>
+      			<p class="footer-link">Privacy Policy</p>
+      			<p class="footer-link">Terms & Conditions</p>
+      			<p class="footer-link">FAQ</p>
+    			</div>
+  			</div>
+		</div>
+
+			</footer>
+
+  	</div>
+  	
+  	
+  	
+</div>
+
+<script>
+  const profileTrigger = document.getElementById('profileTrigger');
+  const sidebar = document.getElementById('profileSidebar');
+
+  profileTrigger.addEventListener('click', (e) => {
+    e.preventDefault(); // prevent anchor from navigating
+    sidebar.classList.toggle('show');
+  });
+
+  document.addEventListener('click', function (e) {
+    const wrapper = document.querySelector('.profile-sidebar-wrapper');
+    if (!wrapper.contains(e.target)) {
+      sidebar.classList.remove('show');
+    }
+  });
+
+  document.getElementById('logout-btn').addEventListener('click', function (e) {
+    e.preventDefault(); // Stop the default navigation
+
+    if (confirm("Are you sure you want to log out?")) {
+      // Proceed to logout if confirmed
+      window.location.href = this.href;
+    }
+  });
+</script>
+
+</body>
+</html>

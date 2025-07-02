@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Market Area E-Complaint System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="MarketArea/Staff/files/logo.png" type="image/png">
+  
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden; /* ✅ REMOVE SCROLL */
+      font-family: "Trebuchet MS", sans-serif;
+    }
+
+    .main-container {
+      display: flex;
+      flex-wrap: wrap;
+      height: 100vh;
+      overflow: hidden; /* ✅ Prevent inner scroll */
+    }
+
+    .left-side {
+      width: 73%;
+      flex-grow: 1;
+      flex-basis: 200;
+    }
+
+    .left-side img {
+      width: 100%;
+      height: 100vh;
+      object-fit: cover;
+      display: block; /* ✅ Remove small image bottom gap */
+    }
+
+    .right-side {
+      width: 27%;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      background-image: url(MarketArea/LogInSignUpFiles/bg.png);
+      background-size: cover;
+      background-position: center;
+      flex-grow: 1;
+      flex-basis: 200;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .right-side img {
+      width: 220px;
+      margin-top: 20px;
+    }
+
+    .right-side h1 {
+      font-size: 20px;
+      text-align: center;
+      font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+      margin-top: 35px;
+    }
+
+    .button1, .button2{
+      margin-top: 40px;
+      width: 80%;
+      max-width: 250px;
+      min-width: 150px;
+      padding: 15px;
+      border-radius: 40px;
+      font-size: 1.1rem;
+      text-decoration: none;
+      text-align: center;
+      box-shadow: 0 5px 8px rgba(0, 0, 0, 0.5);
+      cursor: pointer;
+      font-weight: bold;
+      box-sizing: border-box;
+    }
+
+    .button1 {
+      background: linear-gradient(to right, #4B5320, #2B3209);
+      color: white;
+    }
+
+    .right-side .below {
+      margin-top: auto; /* ✅ Replaces fixed margins to push to bottom cleanly */
+      margin-bottom: 5%;
+      font-size: 15px;
+      text-decoration: none;
+      color: black;
+      text-align: center;
+    }
+
+    .termsCondi {
+      text-decoration: none;
+      color: #007BFF;
+      cursor: pointer;
+    }    
+
+    /* =============================== */
+    /* TERMS MODAL STYLING START HERE */
+    /* =============================== */
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 5% auto;
+      padding: 0;
+      border-radius: 10px;
+      width: 80%;
+      max-width: 600px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+
+    .modal-scrollable {
+        padding: 5px 20px;
+        max-height: 70vh;
+        overflow-y: auto;
+        overflow-x: hidden;
+        position: relative;
+    }
+
+    .modal-scrollable h2 {
+      text-align: center;
+      color: #4B5320;
+      margin-top: 0px;
+    }
+
+    .modal-scrollable h3 {
+      color: #BF8C00;
+      margin-top: 1em;
+    }
+
+    .close {
+        display: block;
+        text-align: right;
+        margin-right: 10px; /* 🟢 moves it to the left of the scrollbar */
+        margin-top: 0px;
+        font-size: 24px;
+        font-weight: bold;
+        color: #aaa;
+        cursor: pointer;
+    }
+
+    .close:hover {
+        color: black;
+    }
+
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    /* ============================= */
+    /* TERMS MODAL STYLING END HERE */
+    /* ============================= */
+
+
+    @media (max-width: 768px) {
+      html, body {
+        overflow-y: auto; /* ✅ Enable scroll only on small screens */
+      }
+
+      .main-container {
+        flex-direction: column-reverse;
+        height: auto;
+      }
+
+      .left-side {
+        display: none;
+      }
+
+      .right-side {
+        width: 100%;
+        height: 100vh;
+        padding: 40px 20px;
+        background-size: cover;
+        background-position: center;
+        background-image: url(MarketArea/LogInSignUpFiles/bg.png);
+      }
+
+      .right-side img {
+        padding-top: 10%;
+        width: 120px;
+      }
+
+      .right-side h1 {
+        font-size: 1.2rem;
+      }
+
+      .right-side h3 {
+        font-size: 1rem;
+      }
+
+      .button1, .button2 {
+        width: 90%;
+        font-size: 1rem;
+        text-align: center;
+      }
+
+      .right-side .below {
+        margin-top: 10%;
+        font-size: 0.9rem;
+      }
+    }
+
+      .below {
+        padding-top: 50px;
+      }    
+
+  </style>
+</head>
+
+<body>
+
+  <div class="main-container">
+
+    <div class="left-side">
+      <img src="MarketArea/Staff/files/marketareabg1.jpg" alt="Arch Image">
+    </div>
+
+    <div class="right-side">
+      <img src="MarketArea/LogInSignUpFiles/logo.png" alt="Logo">
+
+      <h1>Welcome To Barangay Market Area: <br> E-Blotter System</h1>
+
+      <a href="MarketArea/Staff/staffLogin.html" class="button1" title="Staff LogIn">STAFF</a>
+
+
+    </div>
+  </div>
+
+  <script>
+    // Open modal
+    function openModal() {
+      document.getElementById("termsModal").style.display = "block";
+    }
+
+    // Close modal
+    function closeModal() {
+      document.getElementById("termsModal").style.display = "none";
+    }
+
+    // Close modal if clicking outside content
+    window.onclick = function (event) {
+      const modal = document.getElementById("termsModal");
+      if (event.target == modal) {
+        closeModal();
+      }
+    };
+  </script>
+
+</body>
+</html>
+
+
+
+
+
+
+    

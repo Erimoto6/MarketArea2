@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Barangay Market Area: E-Blotter System</title>
+  <link rel="icon" href="files/logo.png" type="image/png" />
+  <link rel="stylesheet" href="inprogresscase.css" />
+  
+  
+</head>
+
+<body>
+  <header>
+    <div style="display: flex; align-items: center;">
+      <img src="files/logo.png" alt="Barangay Logo">
+      <div style="margin-left: 10px;">
+        <div><strong>Barangay Market Area:</strong></div>
+        <div>Complaint System</div>
+      </div>
+    </div>
+
+    <nav>
+      <a href="staffHomepage.html">Home</a>
+      <a href="manageComplaints.html">Manage Complaints</a>
+      <a href="quickMetric.html">Quick Metrics</a>
+      <div class="profile-container">
+        <div class="profile-circle" onclick="toggleDropdown()"></div>
+        <div class="dropdown-menu" id="dropdownMenu">
+          <a href="staffProf.html"><img src="files/profile.png" alt="Profile Icon" style="width: 20px; height: 20px;">Profile</a>
+          <a href="#" onclick="openNotifFromDropdown(event)"><img src="files/notif.png" alt="Notifications Icon">Notifications</a>
+          <a href="settings.html"><img src="files/settings.png" alt="Settings Icon" style="width: 20px; height: 20px;">Settings</a>
+          <a href="#" onclick="return confirmLogout()"><img src="files/logout.png" alt="Logout Icon" style="width: 20px; height: 20px;">Logout</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <div class="main-container">
+    <div class="page-header">
+      <h1 class="page-title">ON GOING CASES</h1>
+    </div>
+
+    <div class="controls-section">
+      <div class="search-container">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search complaints..." />
+        </div>
+      </div>
+      
+      <div class="sort-container">
+        <div class="sort-box">
+          <select id="sortSelect">
+            <option value="newest">Newest to Oldest</option>
+            <option value="oldest">Oldest to Newest</option>
+          </select>
+        </div>
+        <div class="results-info" id="resultsInfo">
+          Showing 1-5 of 5 complaints
+        </div>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table id="complaintTable">
+        <thead>
+          <tr>
+            <th>Complaint ID</th>
+            <th>Complainant</th>
+            <th>Category</th>
+            <th>Date Filed</th>
+            <th>Brief Description</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="pagination" id="paginationControls">
+      <button id="prevPageBtn">←</button>
+      <span class="page-info" id="pageInfo">1 of 1</span>
+      <button id="nextPageBtn">→</button>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-section">
+      <div class="leftside">
+        <img src="files/logo.png" alt="Barangay Logo" />
+        <p>
+          Brgy. Market Area in Sta. Rosa, Laguna is a vibrant urban community known for its public market, 
+          transport terminals, and local businesses—serving as a key center of commerce and daily activity.
+        </p>
+      </div>
+    </div>
+    <div class="footer-section2">
+      <h4>Quick Menu</h4>
+      <ul>
+        <li><a href="staffHomepage.html">Home</a></li>
+        <li><a href="manageComplaints.html">Manage Complaints</a></li>
+        <li><a href="quickMetric.html">Quick Metrics</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <!-- === CUSTOM LOGOUT MODAL === -->
+<div id="logoutModal" class="custom-modal">
+  <div class="modal-content">
+    <p><strong>Are you sure you want to logout?</strong></p>
+    <div class="modal-buttons">
+      <button class="confirm-btn" onclick="confirmLogoutAction()">Yes, Logout</button>
+      <button class="cancel-btn" onclick="closeLogoutModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+  <!-- === NOTIFICATION POPUP START === -->
+  <div id="notifPopup" class="notification-popup">
+    <div class="popup-header">
+      Notifications
+      <span onclick="closeNotifPopup()">×</span>
+    </div>
+    <div class="popup-section">
+      <h5>Today</h5>
+      <div class="notif-item" onclick="window.location.href='complaintApprovalAction.html'">
+        Juan Dela Cruz submitted a noise complaint.
+      </div>
+      <div class="notif-item" onclick="window.location.href='complaintApprovalAction.html2'">
+        Alberto Cruz submitted a illegal dumping complaint.
+      </div>
+    </div>
+    <!--
+        <div class="popup-section">
+      <h5>This Week</h5>
+      <div class="notif-item" onclick="window.location.href='complaintApprovalAction.html'">
+        Carlo Santos submitted a vending complaint.
+      </div>
+      <div class="notif-item" onclick="window.location.href='complaintApprovalAction.html'">
+        Ana Lim reported a dispute with a neighbor.
+      </div>
+    </div>
+  </div>
+      -->
+  <!-- === NOTIFICATION POPUP END === -->
+
+    <!-- === VIEW COMPLAINT MODAL START === -->
+    <div id="viewModal" class="view-modal">
+      <div class="view-modal-content">
+        <div class="view-modal-header">
+          <h2>Complaint Details</h2>
+          <button class="view-modal-close" onclick="closeViewModal()">×</button>
+        </div>
+        <div class="view-modal-body" id="viewModalBody">
+          <!-- Full complaint info populated here -->
+        </div>
+      </div>
+    </div>
+    <!-- === VIEW COMPLAINT MODAL END === -->
+
+
+  
+  <script>
+
+  // Sample data
+  const complaints = [
+    {
+      id: 1,
+      dateFiled: '06/13/25',
+      complainant: 'Lopez, Janine F.',
+      respondent: 'Santos, Bryan R.',
+      type: 'Obstruction complaint',
+      status: 'On Going',
+      age: 34,
+      gender: 'Female',
+      address: 'Unit 204, Sunrise Bldg, Brgy. Market Area',
+      contact: '09198765432',
+      email: 'janine.lopez@email.com',
+      incidentDate: '06/12/25',
+      incidentTime: '10:30 AM',
+      location: 'Corner of Mabini and Rizal Street',
+      description: 'Private vehicle constantly parked in front of a fire hydrant, restricting emergency access and blocking pedestrians.',
+      witnessName: 'Erwin Reyes',
+      witnessContact: '09334561278',
+      assignedTo: 'Officer Lim',
+      appointmentDate: '06/21/25, 9:00 AM'
+    },
+
+    {
+      id: 2,
+      dateFiled: '06/14/25',
+      complainant: 'Torres, Miguel H.',
+      respondent: 'De Vera, Lorna G.',
+      type: 'Sanitation complaint',
+      status: 'On Going',
+      age: 41,
+      gender: 'Male',
+      address: 'Blk 7 Lot 15, Purok 3, Brgy. Market Area',
+      contact: '09274567890',
+      email: 'miguel.torres@email.com',
+      incidentDate: '06/13/25',
+      incidentTime: '7:00 AM',
+      location: 'Back alley of Zone 2',
+      description: 'Household regularly dumps garbage in a non-designated area, attracting flies and causing foul odor throughout the alley.',
+      witnessName: 'Carla Mendoza',
+      witnessContact: '09431234567',
+      assignedTo: 'Officer Bautista',
+      appointmentDate: '06/22/25, 3:00 PM'
+    }
+
+  ];
+
+  // Globals
+  let filteredComplaints = [...complaints];
+  let currentPage = 1;
+  const complaintsPerPage = 5;
+
+  // DOM Elements
+  const searchInput = document.getElementById('searchInput');
+  const sortSelect = document.getElementById('sortSelect');
+  const resultsInfo = document.getElementById('resultsInfo');
+  const pageInfo = document.getElementById('pageInfo');
+  const prevPageBtn = document.getElementById('prevPageBtn');
+  const nextPageBtn = document.getElementById('nextPageBtn');
+
+  // Render table
+  function renderTable() {
+    const tbody = document.querySelector('#complaintTable tbody');
+    tbody.innerHTML = '';
+
+    const start = (currentPage - 1) * complaintsPerPage;
+    const end = start + complaintsPerPage;
+    const pageData = filteredComplaints.slice(start, end);
+
+    if (pageData.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="5">No complaints found</td></tr>';
+    } else {
+      pageData.forEach(c => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>#${String(c.id).padStart(5, '0')}</td>
+          <td>${c.complainant}</td>
+          <td>${c.type}</td>
+          <td>${c.dateFiled}</td>
+          <td>${c.description.slice(0, 40)}...</td>
+        `;
+        row.addEventListener('click', () => viewComplaint(c.id));
+        tbody.appendChild(row);
+      });
+    }
+
+    updateResultsInfo(filteredComplaints.length, start + 1, Math.min(end, filteredComplaints.length));
+    updatePagination(filteredComplaints.length);
+  }
+
+  function updateResultsInfo(total, startItem, endItem) {
+    resultsInfo.textContent = `Showing ${startItem}-${endItem} of ${total} complaints`;
+  }
+
+  function updatePagination(totalItems) {
+    const totalPages = Math.ceil(totalItems / complaintsPerPage);
+    pageInfo.textContent = `${currentPage} of ${totalPages}`;
+    prevPageBtn.disabled = currentPage === 1;
+    nextPageBtn.disabled = currentPage === totalPages || totalPages === 0;
+  }
+
+  // Search and Sort
+  function updateFilteredComplaints() {
+    const query = searchInput.value.toLowerCase().trim();
+    const sortOrder = sortSelect.value;
+
+    filteredComplaints = complaints.filter(c => {
+      const idStr = `#${String(c.id).padStart(5, '0')}`; // e.g., "#00001"
+      return (
+        idStr.toLowerCase().includes(query) ||
+        c.complainant.toLowerCase().includes(query) ||
+        c.type.toLowerCase().includes(query) ||
+        c.description.toLowerCase().includes(query)
+      );
+    });
+
+    filteredComplaints.sort((a, b) => {
+      const dateA = new Date(`20${a.dateFiled.slice(6, 8)}-${a.dateFiled.slice(0, 2)}-${a.dateFiled.slice(3, 5)}`);
+      const dateB = new Date(`20${b.dateFiled.slice(6, 8)}-${b.dateFiled.slice(0, 2)}-${b.dateFiled.slice(3, 5)}`);
+      return sortOrder === 'newest' ? dateB - dateA : dateA - dateB;
+    });
+
+    currentPage = 1;
+    renderTable();
+  }
+
+
+  // View complaint modal (your existing logic)
+  function viewComplaint(id) {
+    const c = complaints.find(c => c.id === id);
+    if (!c) return;
+
+    const modalBody = document.getElementById('viewModalBody');
+    modalBody.innerHTML = `
+      <h3>Complainant Information</h3>
+      <div class="section-content">
+        <p><strong>Name:</strong> ${c.complainant}</p>
+        <p><strong>Age:</strong> ${c.age}</p>
+        <p><strong>Gender:</strong> ${c.gender}</p>
+        <p><strong>Address:</strong> ${c.address}</p>
+        <p><strong>Contact:</strong> ${c.contact}</p>
+        <p><strong>Email:</strong> ${c.email}</p>
+      </div>
+      <hr>
+      <h3>Incident Details</h3>
+      <div class="section-content">
+        <p><strong>Type:</strong> ${c.type}</p>
+        <p><strong>Date/Time:</strong> ${c.incidentDate}, ${c.incidentTime}</p>
+        <p><strong>Location:</strong> ${c.location}</p>
+        <p><strong>Respondent:</strong> ${c.respondent}</p>
+        <p><strong>Description:</strong></p>
+        <div class="description-box">${c.description}</div>
+      </div>
+      <h4 style="margin-top: 20px; color: #6A7337;">Evidence (Optional):</h4>
+      <div class="section-content">
+        <div class="evidence-gallery">
+          <img src="/placeholder.svg?height=200&width=200" class="evidence-item" alt="Evidence 1">
+          <img src="/placeholder.svg?height=200&width=200" class="evidence-item" alt="Evidence 2">
+          <img src="/placeholder.svg?height=200&width=200" class="evidence-item" alt="Evidence 3">
+        </div>
+      </div>
+      <hr>
+      <h3>Witness</h3>
+      <div class="section-content">
+        <p><strong>Name:</strong> ${c.witnessName}</p>
+        <p><strong>Contact:</strong> ${c.witnessContact}</p>
+      </div>
+      <hr>
+      <h3>Status</h3>
+      <p><strong>Current Status:</strong> ${c.status}</p>
+      <div class="status-buttons">
+        <button class="status-btn resolved" onclick="updateStatus(${c.id}, 'Complete')">Mark as Resolved</button>
+        <button class="status-btn ongoing" onclick="updateStatus(${c.id}, 'On Going')">Mark as Ongoing</button>
+        <button class="status-btn abandon" onclick="updateStatus(${c.id}, 'Abandoned')">Abandoned</button>
+      </div>
+    `;
+
+    document.getElementById('viewModal').classList.add('show');
+  }
+
+  function updateStatus(id, newStatus) {
+    const c = complaints.find(c => c.id === id);
+    if (!c) return;
+    c.status = newStatus;
+    alert(`Status changed to ${newStatus}`);
+    closeViewModal();
+    renderTable();
+  }
+
+  function closeViewModal() {
+    document.getElementById('viewModal').classList.remove('show');
+  }
+
+  // Event listeners
+  searchInput.addEventListener('input', updateFilteredComplaints);
+  sortSelect.addEventListener('change', updateFilteredComplaints);
+
+  prevPageBtn.addEventListener('click', () => {
+    if (currentPage > 1) {
+      currentPage--;
+      renderTable();
+    }
+  });
+
+  nextPageBtn.addEventListener('click', () => {
+    const totalPages = Math.ceil(filteredComplaints.length / complaintsPerPage);
+    if (currentPage < totalPages) {
+      currentPage++;
+      renderTable();
+    }
+  });
+
+  window.addEventListener('DOMContentLoaded', () => {
+    updateFilteredComplaints(); // also triggers initial render
+  });
+
+    // ==========================
+    // NOTIFICATION FUNCTIONALITY
+    // ==========================
+
+    function openNotifFromDropdown(event) {
+      event.preventDefault();
+      document.getElementById('dropdownMenu').style.display = 'none';
+      document.getElementById('notifPopup').style.display = 'flex';
+    }
+
+    function toggleDropdown() {
+      const dropdown = document.getElementById('dropdownMenu');
+      const notif = document.getElementById('notifPopup');
+      notif.style.display = 'none';
+      dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function closeNotifPopup() {
+      document.getElementById('notifPopup').style.display = 'none';
+    }
+
+    function scrollToTop(event) {
+      event.preventDefault();
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+
+    // Modal functionality (Terms & Conditions)
+    function openModal() {
+      document.getElementById("termsModal").style.display = "block";
+    }
+
+    function closeModal() {
+      document.getElementById("termsModal").style.display = "none";
+    }
+
+    // Close modal or dropdown when clicking outside
+    window.onclick = function (event) {
+      const modal = document.getElementById("termsModal");
+      if (event.target == modal) {
+        closeModal();
+      }
+
+      if (!event.target.closest('.profile-container') && !event.target.closest('.notification-popup')) {
+        document.getElementById('dropdownMenu').style.display = 'none';
+        closeNotifPopup();
+      }
+    }
+    
+  function confirmLogout() {
+  document.getElementById('logoutModal').style.display = 'flex';
+  return false; // Prevent the <a> tag from redirecting
+}
+
+function closeLogoutModal() {
+  document.getElementById('logoutModal').style.display = 'none';
+}
+
+function confirmLogoutAction() {
+  window.location.href = "staffLogin.html"; // ✅ your original destination
+};  
+  </script>
+
+</body>
+
+</html>

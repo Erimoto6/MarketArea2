@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Forgot Password | Market Area E-Complaint Portal</title>
+    <link rel="icon" type="image/png" href="files/logo.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100vh;
+            font-family: Arial, Helvetica, sans-serif;
+            background-image: url('bg.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .forgot-container {
+            width: 90%;
+            max-width: 400px;
+            padding: 30px 25px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .forgot-container img {
+            width: 100px;
+            margin-bottom: 10px;
+        }
+
+        .forgot-container h1 {
+            font-size: 22px;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .forgot-container p {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .email-input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 25px;
+            border: 1px solid #ccc;
+            margin-bottom: 15px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 12px;
+            border-radius: 25px;
+            background-color: #4B5320;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: background 0.3s ease, transform 0.2s ease;
+            border: none;
+        }
+
+        .submit-button:hover {
+            background-color: #3b4218;
+            transform: translateY(-2px);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 15px;
+            font-size: 14px;
+            color: #4B5320;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Popup Message (Top Toast Style) */
+        .popup-message {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 12px 20px;
+            border-radius: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            color: white;
+            display: none;
+            z-index: 1000;
+            animation: fadeSlideDown 0.5s ease;
+        }
+
+        .popup-success {
+            background-color: #4B5320;
+        }
+
+        .popup-error {
+            background-color: #D9534F;
+        }
+
+        @keyframes fadeSlideDown {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .forgot-container {
+                padding: 25px 15px;
+            }
+        }
+
+        /* Modal Overlay Shared Style */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-box {
+            background: #fff;
+            padding: 0;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: #4B5320;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .modal-close {
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .redirect-toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: #4B5320;
+    color: white;
+    padding: 14px 18px;
+    border-radius: 10px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    display: none;
+    animation: slideFadeIn 0.5s ease forwards;
+    z-index: 1000;
+    text-align: center;
+}
+
+.redirect-toast p {
+    margin: 0 0 8px;
+    font-size: 14px;
+}
+
+.redirect-toast button {
+    background-color: white;
+    color: #4B5320;
+    border: none;
+    border-radius: 5px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background 0.3s ease;
+}
+
+.redirect-toast button:hover {
+    background-color: #e0e0e0;
+}
+
+.redirect-toast small {
+    display: block;
+    margin-top: 6px;
+    font-size: 12px;
+    color: #ddd;
+}
+
+@keyframes slideFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
+    </style>
+</head>
+<body>
+
+    <div class="forgot-container">
+        <img src="files/logo.png" alt="Barangay Logo">
+        <h1>Forgot Password?</h1>
+        <p>Enter your registered email address and we’ll send you a password reset link.</p>
+
+        <input type="email" id="emailInput" class="email-input" placeholder="Enter your email">
+
+        <button class="submit-button" onclick="validateAndShowPopup()">Send Reset Link</button>
+
+        <a href="staffLogin.html" class="back-link">Back to Login</a>
+    </div>
+
+    <!-- Top Toast Popup -->
+    <div class="popup-message" id="popupMessage"></div>
+
+    <!-- Redirect Modal Popup -->
+    <div class="modal-overlay" id="redirectModal">
+      <div class="modal-box" style="max-width: 400px; height: auto;">
+        <div class="modal-header">
+          <h2>Password Reset Link Sent</h2>
+          <span class="modal-close" onclick="closeRedirectModal()">×</span>
+        </div>
+        <div style="padding: 20px; text-align: center;">
+          <p>Click the button below to open the password reset page for demo purposes.</p>
+          <button onclick="redirectToMockReset()" style="margin-top: 10px; padding: 10px 20px; background-color: #4B5320; color: white; border: none; border-radius: 5px; cursor: pointer;">Open Reset Page</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom-Right Redirect Toast -->
+    <!-- Bottom-Right Redirect Toast -->
+        <div class="redirect-toast" id="redirectToast">
+            <p>Password reset link sent!</p>
+                <button onclick="redirectToMockReset()">Open Reset Page</button>
+            <small style="display: block; margin-top: 5px; font-size: 12px; color: #ddd;">For demo purposes only</small>
+        </div>
+
+
+
+    <script>
+        function validateEmail(email) {
+            const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return pattern.test(email);
+        }
+
+
+        function validateAndShowPopup() {
+            const email = document.getElementById('emailInput').value.trim();
+            const popup = document.getElementById('popupMessage');
+
+            popup.style.display = 'none';
+            popup.classList.remove('popup-error', 'popup-success');
+
+            if (email === "") {
+                popup.innerText = "Please enter your email address.";
+                popup.classList.add('popup-error');
+                popup.style.display = 'block';
+                autoHidePopup();
+                return;
+            }
+
+            if (!validateEmail(email)) {
+                popup.innerText = "Invalid email format. Please enter a valid email.";
+                popup.classList.add('popup-error');
+                popup.style.display = 'block';
+                autoHidePopup();
+                return;
+            }
+
+            // Success toast popup
+            popup.innerText = "Password reset link sent to your email!";
+            popup.classList.add('popup-success');
+            popup.style.display = 'block';
+            autoHidePopup();
+
+            // Open redirect modal
+            showRedirectToast();
+        }
+
+        function autoHidePopup() {
+            setTimeout(() => {
+                document.getElementById('popupMessage').style.display = 'none';
+            }, 3000);
+        }
+
+        function showRedirectModal() {
+            document.getElementById('redirectModal').style.display = 'flex';
+        }
+
+        function closeRedirectModal() {
+            document.getElementById('redirectModal').style.display = 'none';
+        }
+
+        function redirectToMockReset() {
+            window.location.href = 'reset_pass_mock.html';
+        }
+
+        function showRedirectToast() {
+    const toast = document.getElementById('redirectToast');
+    toast.style.display = 'block';
+
+    // Auto-hide after 5 seconds
+    setTimeout(() => {
+        toast.style.display = 'none';
+    }, 5000);
+}
+
+function redirectToMockReset() {
+    window.location.href = 'reset_pass_mock.html';
+}
+    </script>
+
+</body>
+</html>

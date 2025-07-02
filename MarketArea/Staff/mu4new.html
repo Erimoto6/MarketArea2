@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Barangay Market Area: Complaint Details</title>
+  <link rel="icon" type="image/png" href="logo.png">
+  
+  <style>
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background: url('files/marketareabg.jpg') no-repeat center center fixed;
+  background-size: cover;
+}
+
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #f5f5f5;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      background-color: #2e3b0d;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 30px;
+      z-index: 1000;
+    }
+
+    header img {
+      height: 60px;
+      margin-right: 13px;
+    }
+
+    header nav {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    header nav a {
+      color: white;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .profile-container {
+      position: relative;
+    }
+
+    .profile-circle {
+      background: #ccc;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 38px;
+      background-color: white;
+      color: black;
+      min-width: 140px;
+      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+      z-index: 10;
+      border-radius: 4px;
+    }
+
+    .dropdown-menu a {
+      color: black;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      gap: 5px;
+    }
+
+    .dropdown-menu a:hover {
+      background-color: #f1f1f1;
+    }
+
+    .dropdown-menu a img {
+      width: 20px;
+      height: 20px;
+    }
+
+    .main-content {
+      padding: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+
+
+body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .form-container {
+            background-color: white;
+            border: 2px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .form-row {
+            display: flex;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+        
+        .form-label {
+            font-weight: bold;
+            margin-right: 10px;
+            min-width: 120px;
+        }
+        
+        .form-value {
+            flex: 1;
+        }
+        
+        .section-divider {
+            border-top: 1px solid #ccc;
+            margin: 20px 0;
+        }
+        
+        .description-box {
+            width: 100%;
+            height: 40px;
+            background-color: #d3d3d3;
+            border: 1px solid #999;
+            margin-top: 5px;
+        }
+        
+        .evidence-container {
+            margin-top: 15px;
+        }
+        
+        .evidence-boxes {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .evidence-box {
+            width: 100px;
+            height: 80px;
+            background-color: #d3d3d3;
+            border: 1px solid #999;
+        }
+        
+        .optional-text {
+            text-align: center;
+            font-style: italic;
+            margin-top: 10px;
+            color: #666;
+        }
+        
+        .witness-section {
+            margin-top: 20px;
+        }
+        
+        .witness-row {
+            display: flex;
+            margin-bottom: 8px;
+        }
+        
+        .witness-label {
+            font-weight: bold;
+            margin-right: 10px;
+            min-width: 80px;
+        }
+        
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            min-width: 100px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .btn-deny {
+            background: linear-gradient(135deg, #d32f2f, #b71c1c);
+            color: white;
+        }
+        
+        .btn-accept {
+            background: linear-gradient(135deg, #4caf50, #2e7d32);
+            color: white;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .btn-deny:hover {
+            background: linear-gradient(135deg, #f44336, #d32f2f);
+        }
+        
+        .btn-accept:hover {
+            background: linear-gradient(135deg, #66bb6a, #4caf50);
+        }
+
+
+
+
+    /* Footer */
+    footer {
+      background-color: #333;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      padding: 20px 30px;
+      font-size: 0.9rem;
+      flex-wrap: wrap;
+      margin-top: 50px;
+    }
+
+    footer .leftside {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      max-width: 500px;
+      margin-top: 10px;
+    }
+
+    footer img {
+      margin-right: 25px;
+      margin-left: 10px;
+      height: 100px;
+    }
+
+    footer .footer-section1 {
+      max-width: 200px;
+      margin-right: 0;
+    }
+
+    footer .footer-section2 {
+      max-width: 200px;
+      margin-right: 100px;
+    }
+    
+    footer h4 {
+      margin-bottom: 10px;
+    }
+
+    footer ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    footer ul li {
+      margin-bottom: 8px;
+    }
+
+    footer ul li a {
+      color: white;
+      text-decoration: none;
+    }
+
+    /* Notification Popup */
+    .notification-popup {
+      position: fixed;
+      top: 80px;
+      right: 30px;
+      width: 320px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+      z-index: 999;
+      display: none;
+      flex-direction: column;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .notification-popup .popup-header {
+      background: #2e3b0d;
+      color: white;
+      padding: 12px 16px;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .notification-popup .popup-header span {
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .notification-popup .popup-section {
+      padding: 10px 16px;
+    }
+
+    .notification-popup .popup-section h5 {
+      margin: 10px 0 5px;
+      font-size: 14px;
+      color: #888;
+    }
+
+    .notification-popup .notif-item {
+      padding: 8px 0;
+      border-bottom: 1px solid #eee;
+      font-size: 14px;
+      cursor: pointer;
+      color: #2e3b0d;
+    }
+
+    .notification-popup .notif-item:last-child {
+      border-bottom: none;
+    }
+
+    .notification-popup .notif-item:hover {
+      background-color: #f8f8f8;
+    }
+
+    /* Terms and Conditions Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.6);
+      margin-top: 50px;
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 5% auto;
+      padding: 0;
+      border-radius: 10px;
+      width: 80%;
+      max-width: 600px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+
+    .modal-scrollable {
+        padding: 5px 20px;
+        max-height: 70vh;
+        overflow-y: auto;
+        overflow-x: hidden;
+        position: relative;
+    }
+
+    .modal-scrollable h2 {
+      text-align: center;
+      color: #4B5320;
+      margin-top: 0px;
+    }
+
+    .modal-scrollable h3 {
+      color: #BF8C00;
+      margin-top: 1em;
+    }
+
+    .close {
+        display: block;
+        text-align: right;
+        margin-right: 10px;
+        margin-top: 0px;
+        font-size: 24px;
+        font-weight: bold;
+        color: #aaa;
+        cursor: pointer;
+    }
+
+    .close:hover {
+        color: black;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .main-content {
+        padding: 15px;
+      }
+
+      .info-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .appointment-form {
+        grid-template-columns: 1fr;
+      }
+
+      .action-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .btn {
+        width: 100%;
+        max-width: 300px;
+      }
+
+      header {
+        padding: 10px 15px;
+      }
+
+      header nav {
+        gap: 10px;
+      }
+
+      footer {
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      footer .leftside {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      footer img {
+        margin: 0 0 15px 0;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .complaint-header h1 {
+        font-size: 24px;
+      }
+
+      .complaint-id {
+        font-size: 16px;
+      }
+
+      .complaint-body {
+        padding: 20px;
+      }
+
+      .action-section {
+        padding: 20px;
+      }
+
+      .evidence-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .info-item {
+        flex-direction: column;
+      }
+
+      .info-label {
+        min-width: auto;
+        margin-bottom: 5px;
+      }
+    }
+
+    .custom-modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  justify-content: center;
+  align-items: center;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.modal-content {
+  background-color: #fff;
+  border: 3px solid #556B2F;
+  padding: 25px 30px;
+  border-radius: 12px;
+  text-align: center;
+  max-width: 400px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.modal-content p {
+  font-size: 18px;
+  margin-bottom: 25px;
+  color: #2e3b0d;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.confirm-btn,
+.cancel-btn {
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.confirm-btn {
+  background-color: #2e3b0d;
+  color: white;
+}
+
+.confirm-btn:hover {
+  background-color: #3c4f1a;
+}
+
+.cancel-btn {
+  background-color: #ccc;
+  color: #333;
+}
+
+.cancel-btn:hover {
+  background-color: #b2b2b2;
+}
+
+  </style>
+</head>
+
+<body>
+  <header>
+    <div style="display: flex; align-items: center;">
+      <img src="files/logo.png" alt="Barangay Logo">
+      <div style="margin-left: 10px;">
+        <div><strong>Barangay Market Area:</strong></div>
+        <div>Complaint System</div>
+      </div>
+    </div>
+
+    <nav>
+      <a href="staffHomepage.html">Home</a>
+      <a href="manageComplaints.html">Manage Complaints</a>
+      <a href="quickMetric.html">Quick Metrics</a>
+      <div class="profile-container">
+        <div class="profile-circle" onclick="toggleDropdown()"></div>
+        <div class="dropdown-menu" id="dropdownMenu">
+          <a href="staffProf.html"><img src="files/profile.png" alt="Profile Icon" style="width: 20px; height: 20px;">Profile</a>
+          <a href="#" onclick="openNotifFromDropdown(event)"><img src="files/notif.png" alt="Notifications Icon">Notifications</a>
+          <a href="settings.html"><img src="files/settings.png" alt="Settings Icon" style="width: 20px; height: 20px;">Settings</a>
+          <a href="#" onclick="return confirmLogout()"><img src="files/logout.png" alt="Logout Icon" style="width: 20px; height: 20px;">Logout</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="main-content">
+    <a href="newcomplaint.html" class="back-button">← Back to Complaints</a>
+    
+ <div class="form-container">
+        <div class="form-row">
+            <span class="form-label">Date Filed:</span>
+            <span class="form-value">03/03/25</span>
+        </div>
+        
+        <div class="form-row">
+            <span class="form-label">Name:</span>
+            <span class="form-value">Juan De Luna</span>
+        </div>
+        
+        <div class="form-row">
+            <span class="form-label">Age:</span>
+            <span class="form-value">31</span>
+        </div>
+        
+        <div class="form-row">
+            <span class="form-label">Gender:</span>
+            <span class="form-value">Male</span>
+        </div>
+        
+        <div class="form-row">
+            <span class="form-label">Address:</span>
+            <span class="form-value">blablabla</span>
+        </div>
+        
+        <div class="form-row">
+            <span class="form-label">Contact:</span>
+            <span class="form-value">09178020304</span>
+        </div>
+        
+        <div class="form-row">
+            <span class="form-label">Email:</span>
+            <span class="form-value">juandeluna@gmail.com</span>
+        </div>
+        
+        <div class="section-divider"></div>
+        
+        <div class="form-row">
+            <span class="form-label">Type of Complaints:</span>
+            <span class="form-value">Noise</span>
+        </div>
+        
+        <div class="form-row">
+            <span class="form-label">Date and Time of Incident:</span>
+            <span class="form-value">03/02/25, 2:00am</span>
+        </div>
+        
+        <div class="form-row">
+            <span class="form-label">Location of Incident:</span>
+            <span class="form-value">rawr street, abc</span>
+        </div>
+        
+        <div style="margin-bottom: 10px;">
+            <span class="form-label">Description:</span>
+            <div class="description-box"></div>
+        </div>
+        
+        <div class="evidence-container">
+            <div class="form-label">Photo, Video, or Screenshot Evidence(Optional):</div>
+            <div class="evidence-boxes">
+                <div class="evidence-box"></div>
+                <div class="evidence-box"></div>
+                <div class="evidence-box"></div>
+            </div>
+            <div class="optional-text">(Optional)</div>
+        </div>
+        
+        <div class="witness-section">
+            <div class="form-label" style="margin-bottom: 10px;">Witness Details:</div>
+            <div class="witness-row">
+                <span class="witness-label">Name:</span>
+            </div>
+            <div class="witness-row">
+                <span class="witness-label">Contact:</span>
+            </div>
+        </div>
+        
+        <div class="button-container">
+            <button class="btn btn-deny">Deny</button>
+            <button class="btn btn-accept">Accept</button>
+        </div>
+    </div>
+
+    </main>
+
+  <footer>
+    <div class="footer-section">
+      <div class="leftside">
+        <img src="files/logo.png" alt="Barangay Logo" />
+        <p>
+          The Market Area of Sta. Rosa, Laguna is a bustling center of commerce and community activity. Known for its
+          public market, transport terminals, and small businesses, it serves as a vital hub for daily essentials,
+          local trade, and public services—connecting residents from different barangays across the city.
+        </p>
+      </div>
+    </div>
+    <div class="footer-section1">
+      <h4>Quick Menu</h4>
+      <ul>
+        <li><a href="staffHomepage.html">Home</a></li>
+        <li><a href="manageComplaints.html">Manage Complaints</a></li>
+        <li><a href="quickMetric.html">Quick Metrics</a></li>
+      </ul>
+    </div>
+    <div class="footer-section2">
+      <h4>Govt. Info</h4>
+      <ul>
+        <li><a href="PrivacyPolicy.html">Privacy Policy</a></li>
+        <li><a href="#" class="termsCondi" onclick="openModal()">Terms & Conditions</a></li>
+        <li><a href="#">FAQ</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <!-- === CUSTOM LOGOUT MODAL === -->
+<div id="logoutModal" class="custom-modal">
+  <div class="modal-content">
+    <p><strong>Are you sure you want to logout?</strong></p>
+    <div class="modal-buttons">
+      <button class="confirm-btn" onclick="confirmLogoutAction()">Yes, Logout</button>
+      <button class="cancel-btn" onclick="closeLogoutModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+  <!-- Notification Popup -->
+  <div id="notifPopup" class="notification-popup">
+    <div class="popup-header">
+      Notifications
+      <span onclick="closeNotifPopup()">×</span>
+    </div>
+    <div class="popup-section">
+      <h5>Today</h5>
+      <div class="notif-item" onclick="alert('Go to complaint #001')">Juan dela Cruz submitted a noise complaint.</div>
+      <div class="notif-item" onclick="alert('Go to resolved complaint #002')">A case was marked as resolved.</div>
+    </div>
+    <div class="popup-section">
+      <h5>This Week</h5>
+      <div class="notif-item" onclick="alert('Go to garbage complaint #003')">Garbage issue updated by staff.</div>
+      <div class="notif-item" onclick="alert('Go to water complaint #004')">Water leak concern reopened.</div>
+    </div>
+  </div>
+
+  <!-- Terms and Conditions Modal -->
+  <div id="termsModal" class="modal">
+    <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+      <div class="modal-scrollable">
+        <h2>Terms and Conditions</h2>
+        <p>Welcome to the Barangay E-Blotter System. By accessing or using this system, you agree to comply with and be bound by the following terms and conditions. Please read them carefully.</p>
+
+        <h3>1. Use of the System</h3>
+        <ul>
+          <li>The E-Blotter System is intended for residents to file and track complaints within the barangay.</li>
+          <li>You must provide accurate and complete information when submitting a complaint.</li>
+          <li>Misuse of the system, including submitting false or malicious complaints, is strictly prohibited.</li>
+        </ul>
+
+        <h3>2. Privacy and Confidentiality</h3>
+        <ul>
+          <li>All personal information submitted will be kept confidential and used only for resolving complaints.</li>
+          <li>Only authorized barangay personnel have access to complaint details.</li>
+        </ul>
+
+        <h3>3. User Responsibilities</h3>
+        <ul>
+          <li>You are responsible for the accuracy of the information you provide.</li>
+          <li>You must not use the system for unlawful purposes or to harass others.</li>
+        </ul>
+
+        <h3>4. System Availability</h3>
+        <ul>
+          <li>The barangay strives to keep the system available at all times but does not guarantee uninterrupted access.</li>
+          <li>Maintenance or technical issues may cause temporary downtime.</li>
+        </ul>
+
+        <h3>5. Changes to Terms</h3>
+        <ul>
+          <li>The barangay reserves the right to update these terms at any time. Changes will be posted on this page.</li>
+        </ul>
+
+        <h3>6. Contact</h3>
+        <p>For questions or concerns, contact the Barangay Office at (012) 345-6789 or email <a href="mailto:barangayeblotter@email.com">barangayeblotter@email.com</a>.</p>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+function confirmLogout() {
+  document.getElementById('logoutModal').style.display = 'flex';
+  return false; // Prevent the <a> tag from redirecting
+}
+
+function closeLogoutModal() {
+  document.getElementById('logoutModal').style.display = 'none';
+}
+
+function confirmLogoutAction() {
+  window.location.href = "staffLogin.html"; // ✅ your original destination
+};
+  </script>
+  </body>
+  </html>

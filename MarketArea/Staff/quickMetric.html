@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Barangay Market Area: E-Blotter System</title>
+  <link rel="icon" href="files/logo.png" type="image/png" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="quickMetric.css" />
+
+  
+</head>
+
+<body>
+  <header>
+    <div style="display: flex; align-items: center;">
+      <img src="files/logo.png" alt="Barangay Logo">
+      <div style="margin-left: 10px;">
+        <div><strong>Barangay Market Area:</strong></div>
+        <div>Complaint System</div>
+      </div>
+    </div>
+
+    <nav>
+      <a href="staffHomepage.html">Home</a>
+      <a href="manageComplaints.html">Manage Complaints</a>
+      <a href="quickMetric.html" onclick="scrollToTop(event)">Quick Metrics</a>
+      <div class="profile-container">
+        <div class="profile-circle" onclick="toggleDropdown()"></div>
+        <div class="dropdown-menu" id="dropdownMenu">
+          <a href="staffProf.html"><img src="files/profile.png" alt="Profile Icon">Profile</a>
+          <a href="#"onclick="openNotifFromDropdown(event)"><img src="files/notif.png" alt="Notifications Icon">Notifications</a>
+          <a href="settings.html"><img src="files/settings.png" alt="Settings Icon">Settings</a>
+          <a href="#" onclick="return confirmLogout()"><img src="files/logout.png" alt="Logout Icon">Logout</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Content Section -->
+  <div class="main-content">
+    <div class="quick-metrics-container">
+      <div class="banner-header">
+        <h2>Quick Metrics</h2>
+        <p class="banner-desc">
+          Get a quick overview of complaint statistics and barangay performance at a glance.
+        </p>
+      </div>
+      
+      <!-- Metrics Summary -->
+      <div class="metrics-summary">
+        <div class="summary-box">
+          Top Complaint
+          <span id="topComplaintCount">Noise</span>
+        </div>
+        <div class="summary-box">
+          Pending Complaints
+          <span id="pendingCount">2</span>
+        </div>
+        <div class="summary-box">
+          Resolved Complaints
+          <span id="resolvedComplaintsCount">1</span>
+        </div>
+        <div class="summary-box">
+          Total complaints this week
+          <span id="weeklyCount">4</span>
+        </div>
+      </div>
+
+      <!-- Metrics Charts -->
+      <div class="metrics-charts">
+        <div class="chart-box">
+          <h3>Number of Complaints Over Time</h3>
+          <div class="chart-container">
+            <canvas id="complaintsLineChart"></canvas>
+          </div>
+        </div>
+        <div class="chart-box">
+          <h3>Location with Most Issues</h3>
+          <div class="chart-container">
+            <canvas id="locationChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <footer>
+    <div class="footer-section">
+      <div class="leftside">
+        <img src="files/logo.png" alt="Barangay Logo" /><br />
+        <p>
+          Brgy. Market Area in Sta. Rosa, Laguna is a vibrant urban community known for its public market, 
+          transport terminals, and local businesses—serving as a key center of commerce and daily activity.
+        </p>
+      </div>
+    </div>
+    <div class="footer-section2">
+      <h4>Quick Menu</h4>
+      <ul>
+        <li><a href="staffHomepage.html" >Home</a></li>
+        <li><a href="manageComplaints.html">Manage Complaint</a></li>
+        <li><a href="quickMetric.html" onclick="scrollToTop(event)">Quick Metrics</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <div id="logoutModal" class="custom-modal">
+  <div class="modal-content">
+    <p><strong>Are you sure you want to logout?</strong></p>
+    <div class="modal-buttons">
+      <button class="confirm-btn" onclick="confirmLogoutAction()">Yes, Logout</button>
+      <button class="cancel-btn" onclick="closeLogoutModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+  <!-- === NOTIFICATION POPUP START === -->
+  <div id="notifPopup" class="notification-popup">
+    <div class="popup-header">
+      Notifications
+      <span onclick="closeNotifPopup()">×</span>
+    </div>
+    <div class="popup-section">
+      <h5>Today</h5>
+      <div class="notif-item" onclick="window.location.href='complaintApprovalAction.html'">
+        Juan Dela Cruz submitted a noise complaint.
+      </div>
+      <div class="notif-item" onclick="window.location.href='complaintApprovalAction.html2'">
+        Alberto Cruz submitted a illegal dumping complaint.
+      </div>
+    </div>
+    <!--
+        <div class="popup-section">
+      <h5>This Week</h5>
+      <div class="notif-item" onclick="window.location.href='complaintApprovalAction.html'">
+        Carlo Santos submitted a vending complaint.
+      </div>
+      <div class="notif-item" onclick="window.location.href='complaintApprovalAction.html'">
+        Ana Lim reported a dispute with a neighbor.
+      </div>
+    </div>
+  </div>
+      -->
+  <!-- === NOTIFICATION POPUP END === -->
+  
+
+  <script>
+    function toggleDropdown() {
+      const menu = document.getElementById('dropdownMenu');
+      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    }
+
+    window.onclick = function (event) {
+      if (!event.target.closest('.profile-container')) {
+        const dropdown = document.getElementById('dropdownMenu');
+        if (dropdown) dropdown.style.display = 'none';
+      }
+    }
+
+    function scrollToTop(event) {
+      event.preventDefault();
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+
+    function toggleDropdown() {
+      const dropdown = document.getElementById('dropdownMenu');
+      const notif = document.getElementById('notifPopup');
+      notif.style.display = 'none';
+      dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function openNotifFromDropdown(event) {
+      event.preventDefault();
+      document.getElementById('dropdownMenu').style.display = 'none';
+      document.getElementById('notifPopup').style.display = 'flex';
+    }
+
+    function closeNotifPopup() {
+      document.getElementById('notifPopup').style.display = 'none';
+    }
+
+    window.onclick = function (e) {
+      if (!e.target.closest('.profile-container') && !e.target.closest('.notification-popup')) {
+        document.getElementById('dropdownMenu').style.display = 'none';
+        closeNotifPopup();
+      }
+    }
+
+    function openTerms(event) {
+      event.preventDefault();
+      document.getElementById('termsModal').style.display = 'flex';
+    }
+
+    function closeTerms() {
+      document.getElementById('termsModal').style.display = 'none';
+    }
+
+    function openModal() {
+      document.getElementById("termsModal").style.display = "block";
+    }
+
+    function closeModal() {
+      document.getElementById("termsModal").style.display = "none";
+    }
+
+    // Initialize charts when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeCharts();
+    });
+
+    function initializeCharts() {
+      // Line Chart for Complaints Over Time
+      const lineCtx = document.getElementById('complaintsLineChart').getContext('2d');
+      new Chart(lineCtx, {
+        type: 'line',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+          datasets: [{
+            label: 'Number of Complaints',
+            data: [12, 19, 8, 15, 22, 18],
+            borderColor: '#6A7337',
+            backgroundColor: 'rgba(106, 115, 55, 0.1)',
+            borderWidth: 3,
+            fill: true,
+            tension: 0.4,
+            pointBackgroundColor: '#B8A05B',
+            pointBorderColor: '#6A7337',
+            pointBorderWidth: 2,
+            pointRadius: 6,
+            pointHoverRadius: 8
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: true,
+              position: 'top',
+              labels: {
+                color: '#2c3e50',
+                font: {
+                  size: 12,
+                  weight: '600'
+                }
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: {
+                color: 'rgba(0,0,0,0.1)'
+              },
+              ticks: {
+                color: '#7f8c8d'
+              }
+            },
+            x: {
+              grid: {
+                color: 'rgba(0,0,0,0.1)'
+              },
+              ticks: {
+                color: '#7f8c8d'
+              }
+            }
+          },
+          interaction: {
+            intersect: false,
+            mode: 'index'
+          }
+        }
+      });
+
+      // Bar Chart for Location Issues
+      const barCtx = document.getElementById('locationChart').getContext('2d');
+      new Chart(barCtx, {
+        type: 'bar',
+        data: {
+          labels: ['Tatlong Hari Street', 'Road 4, Ibaba', 'Cattleya Street (LM Subdivision)', 'J.P. Rizal Boulevard', 'Rizal Boulevard'],
+          datasets: [{
+            label: 'Number of Issues',
+            data: [8, 12, 6, 15, 9],
+            backgroundColor: [
+              'rgba(106, 115, 55, 0.8)',
+              'rgba(184, 160, 91, 0.8)',
+              'rgba(75, 83, 32, 0.8)',
+              'rgba(138, 148, 86, 0.8)',
+              'rgba(27, 33, 9, 0.8)'
+            ],
+            borderColor: [
+              '#6A7337',
+              '#B8A05B',
+              '#4B5320',
+              '#8A9456',
+              '#1B2109'
+            ],
+            borderWidth: 2,
+            borderRadius: 8,
+            borderSkipped: false
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: true,
+              position: 'top',
+              labels: {
+                color: '#2c3e50',
+                font: {
+                  size: 12,
+                  weight: '600'
+                }
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: {
+                color: 'rgba(0,0,0,0.1)'
+              },
+              ticks: {
+                color: '#7f8c8d'
+              }
+            },
+            x: {
+              grid: {
+                color: 'rgba(0,0,0,0.1)'
+              },
+              ticks: {
+                color: '#7f8c8d'
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // Handle window resize
+    window.addEventListener('resize', function() {
+      // Charts will automatically resize due to responsive: true
+    });
+
+    // ==========================
+    // NOTIFICATION FUNCTIONALITY
+    // ==========================
+
+    function openNotifFromDropdown(event) {
+      event.preventDefault();
+      document.getElementById('dropdownMenu').style.display = 'none';
+      document.getElementById('notifPopup').style.display = 'flex';
+    }
+
+    function toggleDropdown() {
+      const dropdown = document.getElementById('dropdownMenu');
+      const notif = document.getElementById('notifPopup');
+      notif.style.display = 'none';
+      dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function closeNotifPopup() {
+      document.getElementById('notifPopup').style.display = 'none';
+    }
+
+    function scrollToTop(event) {
+      event.preventDefault();
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+
+    // Modal functionality (Terms & Conditions)
+    function openModal() {
+      document.getElementById("termsModal").style.display = "block";
+    }
+
+    function closeModal() {
+      document.getElementById("termsModal").style.display = "none";
+    }
+
+    // Close modal or dropdown when clicking outside
+    window.onclick = function (event) {
+      const modal = document.getElementById("termsModal");
+      if (event.target == modal) {
+        closeModal();
+      }
+
+      if (!event.target.closest('.profile-container') && !event.target.closest('.notification-popup')) {
+        document.getElementById('dropdownMenu').style.display = 'none';
+        closeNotifPopup();
+      }
+    }
+    
+    function confirmLogout() {
+      // Ask the user for confirmation
+      const confirmation = confirm("Are you sure you want to logout?");
+      
+      if (confirmation) {
+        // Proceed to logout (redirect or function)
+        window.location.href = "logout.php"; // Replace with your actual logout page or script
+      } else {
+        // Do nothing, stay on the current page
+        alert("Logout cancelled.");
+      }
+    }
+    
+    function confirmLogout() {
+  document.getElementById('logoutModal').style.display = 'flex';
+  return false; // Prevent the <a> tag from redirecting
+}
+
+function closeLogoutModal() {
+  document.getElementById('logoutModal').style.display = 'none';
+}
+
+function confirmLogoutAction() {
+  window.location.href = "staffLogin.html"; // ✅ your original destination
+};
+
+  </script>
+</body>
+
+</html>

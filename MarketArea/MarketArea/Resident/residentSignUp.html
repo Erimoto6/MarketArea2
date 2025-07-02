@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Market Area E-Complaint Portal</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .main-container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .left-side {
+            width: 73%;
+            flex-grow: 1;
+            flex-basis: 200;
+        }
+
+        .right-side {
+            width: 27%;
+            height: 100vh;
+            display: flex;
+
+            align-items: center;
+            flex-direction: column;
+            justify-content: center;
+
+            background-image: url(bg.png);
+            background-size: cover;
+  
+            
+            flex-grow: 1;
+            flex-basis: 200;
+        }
+
+        .left-side img {
+            width: 100%;
+            height: 100vh;
+            margin-top: 0;
+        }
+
+        .right-side img {
+            width: 100px;
+            padding-bottom: 3%;
+            margin-top: 5%;
+        }
+
+
+        .right-side h1 {
+            font-size: 20px;
+            text-align: center;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        }
+
+        .right-side h3 {
+            font-size: 15px;
+        }
+
+        .fullName {
+            flex-direction: row;
+        }
+
+        .first-name-input {
+            width: 92px;
+            margin-right: 5px;
+            font-size: 15px;
+            padding: 10px 15px;
+            border: 2px solid #ccc;
+            border-radius: 20px;
+            margin-top: 10px;
+        }            
+
+        .last-name-input {
+            width: 92px;
+            font-size: 15px;
+            padding: 10px 15px;
+            border: 2px solid #ccc;
+            border-radius: 20px;
+            margin-top: 10px;
+        }
+
+        .age-input-box {
+            width: 230px;
+            font-size: 15px;
+            padding: 10px 15px;
+            border: 2px solid #ccc;
+            border-radius: 20px;
+            margin-top: 10px;
+        }
+
+        .address-input-box {
+            width: 230px;
+            font-size: 15px;
+            padding: 10px 15px;
+            border: 2px solid #ccc;
+            border-radius: 20px;
+            margin-top: 10px;
+        }    
+
+        .email-input-box {
+            width: 230px;
+            font-size: 15px;
+            padding: 10px 15px;
+            border: 2px solid #ccc;
+            border-radius: 20px;
+            margin-top: 10px;
+        }    
+
+        .pass-input-box {
+            width: 230px;
+            font-size: 15px;
+            padding: 10px 15px;
+            border: 2px solid #ccc;
+            border-radius: 20px;
+            margin-top: 10px;
+        }    
+
+        .confiPass-input-box {
+            width: 230px;
+            font-size: 15px;
+            padding: 10px 15px;
+            border: 2px solid #ccc;
+            border-radius: 20px;
+            margin-top: 10px;
+        }    
+
+        .button1 {    
+            margin-top: 2.3%;
+            display: inline-block;
+            width: 200px;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 20px;
+            text-decoration: none;
+            text-align: center;
+            margin-bottom: 5%;
+
+            box-shadow: 0 8px 8px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+            color: rgb(255, 255, 255);
+            font-weight: bold;
+            background-color: #4B5320;
+        }
+
+        .right-side p {
+            margin-top: 15px;
+            text-align: center;
+            font-size: 13px;
+
+        }
+
+        .login {
+            font-size: 13px;
+            text-decoration: none; 
+        }
+
+
+        
+
+    </style>
+    </head>
+
+    <body>
+
+        <div class="main-container">
+
+            <div class="left-side">
+                <img src="arch.png">
+            </div>
+
+            <div class="right-side">
+                <img src="logo.png">
+                <h1>Welcome to Market Area E-Complaint Portal</h1>
+                <h3>Log In to your resident account</h3>
+                
+                <div class="fullName">
+                <input type="text" class="first-name-input" placeholder="First Name">
+                <input type="text" class="last-name-input" placeholder="Last Name">
+                </div>
+
+                <input type="text" class="age-input-box" placeholder="age">
+                
+                <input type="text" class="address-input-box" placeholder="Address">
+                
+                <input type="text" class="email-input-box" placeholder="Email Address">
+                
+                <input type="text" class="pass-input-box" placeholder="Password">
+                
+                <input type="text" class="confiPass-input-box" placeholder="Confirm Passwords">
+
+
+                <a href="residentHomepage.html" class="button1" title="Log In">Log In</a>
+
+                <p>Already have an account? <br><a href="residentLogin.html" class="login">Log In here!</a> </p>
+
+            </div>
+
+        </div>
+
+    </body>
+</html> 

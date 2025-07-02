@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Complaint History</title>
+  <link rel="stylesheet" href="my_comp.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Trebuchet+MS&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- HEADER SECTION -->
+	<header class="header_gradient">
+  		<div class="header-left">
+    		<img class="market-area-logo" src="logo.png" alt="Logo" />
+    		<div class="barangay-title">
+      		    <p class="barangay-market-area">Barangay Market Area:<br>E-Blotter System</p>
+    	    </div>
+  		</div>
+
+  		<div class="navbar">
+  			<div class="nav-links">
+    			<a href="residentHomepage.html">Home</a>
+    			<a href="my_complaints.html">My Complaints</a>
+    			<a href="contact.html">Contacts</a>
+  			</div>
+
+  	<!-- Profile + Sidebar Wrapper -->
+		<div class="profile-sidebar-wrapper">
+  	<!-- Profile Trigger -->
+  		<div class="profile-link" id="profileTrigger">
+    		<div class="profile"></div>
+  		</div>
+
+  	<!-- Collapsible Sidebar -->
+  		<div class="sidebar collapsed" id="profileSidebar">
+			<a href="#" class="sidebar-item">
+      			<i class="icon">👤</i>
+      			<span class="label">Profile</span>
+    		</a>
+    		<a href="#" class="sidebar-item">
+      			<i class="icon">⚙️</i>
+      			<span class="label">Settings</span>
+			</a>
+    		<a href="#" class="sidebar-item">
+      			<i class="icon">🔐</i>
+      			<span class="label">Account & Security</span>
+			</a>
+    		<a href="residentLogin.html" class="sidebar-item" id="logout-btn">
+  				<i class="icon">⏻</i>
+  				<span class="label">Logout</span>
+			</a>
+  		</div>
+		</div>
+        </div>
+	</header>
+
+  <!-- Main Content Section -->
+  <main class="content">
+
+    <!-- Complaint Section Header -->
+    <div class="complaints-header">
+      <div class="complaint-icon">
+            <img src="history_icon.png" alt="Complaint Icon">
+    </div>
+
+      <h2>My Complaints</h2>
+    </div>
+
+    <!-- Search and Filter Controls -->
+    <div class="controls" style="display: flex; justify-content: flex-end; gap: 10px; align-items: center; margin-bottom: 20px;">
+  
+    <!-- Search Bar -->
+    <input type="text" placeholder="Search by keyword..." class="search-bar" id="search-input" oninput="applyFilters()">
+
+    <!-- Burger icon as dropdown toggle -->
+    <div class="dropdown" style="position: relative;">
+        <button class="filter-button" onclick="toggleDropdown()" title="Filter content">☰</button>
+            <div id="dropdownMenu">
+                
+    <div class="filter-group">
+      <label for="filter-date">Date</label>
+      <input type="date" id="filter-date">
+    </div>
+
+      <div class="filter-group">
+        <label for="filter-type">Type of Complaint</label>
+        <select id="filter-type">
+          <option value="">All</option>
+          <option value="Noise">Noise</option>
+          <option value="Littering">Littering</option>
+          <option value="Sanitation">Sanitation</option>
+          <option value="Others">Others</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="filter-status">Status</label>
+        <select id="filter-status">
+          <option value="">All</option>
+          <option value="Pending">Pending</option>
+          <option value="In Progress">In Progress</option>
+          <option value="Under Review">Under Review</option>
+          <option value="Resolved">Resolved</option>
+        </select>
+      </div>
+
+      <!-- Apply & Clear Buttons -->
+      <div class="filter-actions">
+        <button onclick="applyFilters()">Apply Filters</button>
+        <button onclick="clearFilters()" class="clear-btn">Clear Filters</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Complaint History Table -->
+    <table class="complaints-table">
+      <thead>
+        <tr>
+          <th>Date Filed</th>
+          <th>Name</th>
+          <th>Type of Complaint</th>
+          <th>Status</th>
+          <th></th> <!-- for "Details" button -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>03/03/25</td>
+          <td></td>
+          <td>Noise</td>
+          <td>Under Review</td>
+          <td><button class="details-btn">Details</button></td>
+        </tr>
+        <!-- Additional rows can go here -->
+      </tbody>
+    </table>
+
+  </main>
+
+  <!-- FOOTER SECTION -->
+    <footer class="footer">
+        <div class="footer-left">
+            <img class="market-area-logo2" src="logo.png" alt="Barangay Logo" />
+                <p class="a-barangay-that">
+                    A Barangay that is God-centered, united, service-oriented, inclusive, and responsive — guided by faith, integrity, and accountable governance.
+                </p>
+        </div>
+
+        <div class="footer-right-group">
+            <div class="footer-middle">
+                <h4 class="footer-heading">Other Services</h4>
+                    <p class="footer-link">Insert Site</p>
+                    <p class="footer-link">Insert Site</p>
+                    <p class="footer-link">Insert Site</p>
+            </div>
+
+            <div class="footer-right">
+                <h4 class="footer-heading">Gov't Info</h4>
+                    <p class="footer-link">Privacy Policy</p>
+                    <p class="footer-link">Terms & Conditions</p>
+                    <p class="footer-link">FAQ</p>
+                </div>
+            </div>
+        </footer>
+
+  <script>
+    // profile
+
+  const profileTrigger = document.getElementById('profileTrigger');
+  const sidebar = document.getElementById('profileSidebar');
+
+  profileTrigger.addEventListener('click', (e) => {
+    e.preventDefault(); // prevent anchor from navigating
+    sidebar.classList.toggle('show');
+  });
+
+  document.addEventListener('click', function (e) {
+    const wrapper = document.querySelector('.profile-sidebar-wrapper');
+    if (!wrapper.contains(e.target)) {
+      sidebar.classList.remove('show');
+    }
+  });
+
+  document.getElementById('logout-btn').addEventListener('click', function (e) {
+    e.preventDefault(); // Stop the default navigation
+
+    if (confirm("Are you sure you want to log out?")) {
+      // Proceed to logout if confirmed
+      window.location.href = this.href;
+    }
+  });
+
+  // Controls
+
+  function toggleDropdown() {
+  const dropdownMenu = document.getElementById('dropdownMenu');
+  dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+}
+
+
+  // Close dropdown on outside click
+  window.addEventListener('click', function(event) {
+  const dropdown = document.querySelector('.dropdown');
+  if (!dropdown.contains(event.target)) {
+    document.getElementById('dropdownMenu').style.display = 'none';
+  }
+});
+
+
+  function applyFilters() {
+  const searchVal = document.getElementById('search-input').value.toLowerCase();
+  const dateVal = document.getElementById('filter-date').value;
+  const typeVal = document.getElementById('filter-type').value.toLowerCase();
+  const statusVal = document.getElementById('filter-status').value.toLowerCase();
+
+  const rows = document.querySelectorAll('.complaints-table tbody tr');
+
+  rows.forEach(row => {
+    const date = row.cells[0].textContent.trim();
+    const name = row.cells[1].textContent.trim().toLowerCase();
+    const type = row.cells[2].textContent.trim().toLowerCase();
+    const status = row.cells[3].textContent.trim().toLowerCase();
+
+    const matches =
+      (!dateVal || date === dateVal) &&
+      (!typeVal || type === typeVal) &&
+      (!statusVal || status === statusVal) &&
+      (
+        !searchVal ||
+        name.includes(searchVal) ||
+        type.includes(searchVal) ||
+        status.includes(searchVal)
+      );
+
+    row.style.display = matches ? '' : 'none';
+  });
+
+  document.querySelector('.dropdown').classList.remove('show');
+}
+
+function clearFilters() {
+  document.getElementById('filter-date').value = '';
+  document.getElementById('filter-type').value = '';
+  document.getElementById('filter-status').value = '';
+  document.getElementById('search-input').value = '';
+
+  applyFilters();
+}
+
+
+
+</script>
+
+</body>
+</html>

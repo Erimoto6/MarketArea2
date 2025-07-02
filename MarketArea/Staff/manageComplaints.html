@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>E-Blotter System</title>
+  <link rel="icon" href="files/logo.png" type="image/png" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="managecomplaint.css" />
+</head>
+
+<body>
+    <header>
+      <div id="brand"> <!--Header Title-->
+        <img src="files/logo.png" alt="" class="logo" /><a
+          class="brand-text"
+        ></a>
+      </div>
+      <nav>
+        <ul class="nav-list">
+          <li><a href="staffHomepage.html">Home</a></li>
+          <li><a href="manageComplaints.html">Manage Complaints</a></li>
+          <li><a href="Message.html">Message</a></li>
+          <li><a href="settings.html">Settings</a></li>
+        </ul>
+      </nav>
+      <div id="hamburger-icon" onclick="toggleMobileMenu(this)">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+      </div>
+      <ul class="mobile-menu">
+          <li><a href="staffHomepage.html">Home</a></li>
+          <li><a href="manageComplaints.html">Manage Complaints</a></li>
+          <li><a href="Message.html">Message</a></li>
+          <li><a href="settings.html">Settings</a></li>
+      </ul>
+    </header>
+
+    <!-- Dashboard Section -->
+    <div class="dashboard-section">
+      <!-- Complaints Management -->
+      <div class="complaints-section">
+        <h2 class="section-title">
+          <i class="fas fa-clipboard-list"></i>
+          Manage Complaints
+        </h2>
+
+
+
+        <!-- Controls -->
+        <div class="controls">
+          <div class="controls-left">
+            <div class="search-box">
+              <i class="fas fa-search"></i>
+              <input type="text" id="searchInput" placeholder="Search complaints..." />
+            </div>
+            <div class="sort-box">
+              <i class="fas fa-filter"></i>
+              <select id="sortSelect">
+                <option value="newest">Newest to Oldest</option>
+                <option value="oldest">Oldest to Newest</option>
+              </select>
+            </div>
+          </div>
+          <div class="results-info" id="resultsInfo">
+            Showing 1-5 of 5 complaints
+          </div>
+
+        <div class="archive-button">
+          <a href="archive.html" class="status-btn btn-archive">
+            <i class="fas fa-folder"></i> Archive Folder
+          </a>
+
+          <button class="status-btn btn-archive" onclick="archiveSelectedComplaints()">
+            <i class="fas fa-box-archive"></i> Archive
+          </button>
+
+        </div>  
+      </div>
+
+        <!-- Complaints Table -->
+        <table class="complaints-table">
+          <thead>
+            <tr>
+              <th>Complaint ID</th>
+              <th>Date Filed</th>
+              <th>Complainant</th>
+              <th>Respondent</th>
+              <th>Type of Complaint</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="complaintsTableBody">
+            <!-- Table rows will be populated by JavaScript -->
+          </tbody>
+        </table>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="empty-state" style="display: none;">
+          <i class="fas fa-clipboard-list"></i>
+          <p>No complaints found</p>
+          <small>Try adjusting your search criteria</small>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination" id="pagination">
+          <button id="prevBtn" onclick="changePage(-1)">
+            <i class="fas fa-chevron-left"></i> Previous
+          </button>
+          <span class="page-info" id="pageInfo">Page 1 of 1</span>
+          <button id="nextBtn" onclick="changePage(1)">
+            Next <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+ 
+  <!-- View Complaint Modal -->
+  <div id="viewModal" class="view-modal">
+    <div class="view-modal-content">
+      <div class="view-modal-header">
+        <h2>Complaint Details</h2>
+        <button class="view-modal-close" onclick="closeViewModal()">×</button>
+      </div>
+      <div class="view-modal-body" id="viewModalBody">
+        <!-- Content will be populated by JavaScript -->
+      </div>
+    </div>
+  </div>
+
+
+    <!-- === CUSTOM LOGOUT MODAL === -->
+  <div id="logoutModal" class="custom-modal">
+    <div class="modal-content">
+      <p><strong>Are you sure you want to logout?</strong></p>
+      <div class="modal-buttons">
+        <button class="confirm-btn" onclick="confirmLogoutAction()">Yes, Logout</button>
+        <button class="cancel-btn" onclick="closeLogoutModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // Sample complaints data with detailed information
+  let complaints = JSON.parse(localStorage.getItem('complaints') || '[]');
+
+  // Only set mock data if localStorage is empty (first visit)
+  if (complaints.length === 0) {
+    complaints = [
+      {
+        id: 1,
+        dateFiled: '06/09/25',
+        complainant: 'Vasquez, Ma. Elaine B.',
+        respondent: 'Ackermann, Mikasa',
+        type: 'Noise complaint',
+        status: 'On going',
+        age: 31,
+        gender: 'Female',
+        address: '123 Main Street, Barangay Market Area',
+        contact: '09178920304',
+        email: 'elaine.vasquez@gmail.com',
+        incidentDate: '06/08/25',
+        incidentTime: '2:00 AM',
+        location: 'Rawr Street, ABC',
+        description: 'Loud music and shouting from neighbor\'s house during late hours. This has been happening for several nights and is disturbing the peace of the neighborhood.',
+        witnessName: 'Juan Santos',
+        witnessContact: '09123456789',
+        assignedTo: 'Officer Rodriguez',
+        appointmentDate: '06/15/25, 10:00 AM'
+      },
+      {
+        id: 2,
+        dateFiled: '06/01/25',
+        complainant: 'Ackermann, Mikasa',
+        respondent: 'Vasquez, Ma. Elaine B.',
+        type: 'Property disputes',
+        status: 'On going',
+        age: 28,
+        gender: 'Female',
+        address: '456 Oak Avenue, Barangay Market Area',
+        contact: '09187654321',
+        email: 'mikasa.ackermann@gmail.com',
+        incidentDate: '05/30/25',
+        incidentTime: '3:00 PM',
+        location: 'Property boundary line',
+        description: 'Dispute over property boundary lines and fence placement. Neighbor has built a fence that encroaches on my property.',
+        witnessName: 'Maria Cruz',
+        witnessContact: '09198765432',
+        assignedTo: 'Officer Martinez',
+        appointmentDate: 'Resolved on 06/05/25'
+      },
+      {
+        id: 3,
+        dateFiled: '06/15/25',
+        complainant: 'Reyes, Antonio',
+        respondent: 'Delos Santos, Carlo',
+        type: 'Noise complaint',
+        status: 'On going',
+        age: 35,
+        gender: 'Male',
+        address: '789 Pine Street, Barangay Malinis',
+        contact: '09181234567',
+        email: 'antonio.reyes@email.com',
+        incidentDate: '06/14/25',
+        incidentTime: '11:45 PM',
+        location: 'Neighbor’s residence',
+        description: 'Loud music and shouting past midnight disturbing the neighborhood. This has been recurring every weekend.',
+        witnessName: 'Luis Fernandez',
+        witnessContact: '09186543210',
+        assignedTo: 'Officer Santiago',
+        appointmentDate: '06/20/25'
+      },
+      {
+        id: 4,
+        dateFiled: '06/10/25',
+        complainant: 'Lopez, Maria Angelica',
+        respondent: 'Gomez, Ricardo',
+        type: 'Verbal abuse',
+        status: 'On going',
+        age: 42,
+        gender: 'Female',
+        address: '123 Mango Lane, Barangay San Vicente',
+        contact: '09223456789',
+        email: 'maria.lopez@gmail.com',
+        incidentDate: '06/08/25',
+        incidentTime: '2:30 PM',
+        location: 'Public market',
+        description: 'Respondent verbally assaulted the complainant in public using degrading language during a disagreement.',
+        witnessName: 'Jessa Villanueva',
+        witnessContact: '09177654321',
+        assignedTo: 'Officer Dela Cruz',
+        appointmentDate: '06/18/25'
+      },
+      {
+        id: 5,
+        dateFiled: '06/18/25',
+        complainant: 'Torres, Miguel',
+        respondent: 'Bautista, Elmer',
+        type: 'Vandalism',
+        status: 'On going',
+        age: 30,
+        gender: 'Male',
+        address: 'Lot 9 Block 5, Barangay Sta. Lucia',
+        contact: '09192345678',
+        email: 'miguel.torres@yahoo.com',
+        incidentDate: '06/16/25',
+        incidentTime: '6:00 PM',
+        location: 'Garage wall',
+        description: 'Graffiti and paint were found on the complainant’s garage wall. Security camera footage shows the respondent near the scene.',
+        witnessName: 'Joel Navarro',
+        witnessContact: '09234561234',
+        assignedTo: 'Officer Ramos',
+        appointmentDate: '06/25/25'
+
+      },
+      {
+        id: 6,
+        dateFiled: '06/05/25',
+        complainant: 'Santos, Clara',
+        respondent: 'Manalo, Erika',
+        type: 'Harassment',
+        status: 'On going',
+        age: 26,
+        gender: 'Female',
+        address: '54 Acacia Drive, Barangay Luntian',
+        contact: '09217894561',
+        email: 'clara.santos@hotmail.com',
+        incidentDate: '06/02/25',
+        incidentTime: '10:15 AM',
+        location: 'Workplace',
+        description: 'Repeated unwanted comments and behavior from the respondent at the workplace despite warnings.',
+        witnessName: 'Nina Garcia',
+        witnessContact: '09187659876',
+        assignedTo: 'Officer Aquino',
+        appointmentDate: 'Resolved on 06/10/25'
+
+      },
+      {
+        id: 7,
+        dateFiled: '06/20/25',
+        complainant: 'Delacruz, Jerome',
+        respondent: 'Padilla, Nestor',
+        type: 'Physical assault',
+        status: 'On going',
+        age: 39,
+        gender: 'Male',
+        address: 'Unit 2B, Sunrise Apartments, Barangay Mabini',
+        contact: '09183456789',
+        email: 'jerome.dc@gmail.com',
+        incidentDate: '06/19/25',
+        incidentTime: '9:00 PM',
+        location: 'Basketball court',
+        description: 'Respondent punched the complainant during a heated argument after a basketball game.',
+        witnessName: 'Marco Tan',
+        witnessContact: '09324567890',
+        assignedTo: 'Officer Lim',
+        appointmentDate: '06/27/25'
+      }
+    ];
+    // Save to localStorage
+    localStorage.setItem('complaints', JSON.stringify(complaints));
+  }
+
+  // Remove archived from visible complaints
+  const archivedIds = JSON.parse(localStorage.getItem('archivedIds') || '[]');
+  complaints = complaints.filter(c => !archivedIds.includes(String(c.id)));
+
+
+  let filteredComplaints = [...complaints];
+  let currentPage = 1;
+  const complaintsPerPage = 5;
+
+  // Initialize the page
+  document.addEventListener('DOMContentLoaded', function() {
+    updateTable();
+    updateResultsInfo();
+  });
+
+  // Search functionality
+  document.getElementById('searchInput').addEventListener('input', function() {
+    const searchTerm = this.value.toLowerCase();
+    filteredComplaints = complaints.filter(complaint =>
+      Object.values(complaint).some(value =>
+        String(value).toLowerCase().includes(searchTerm)
+      )
+    );
+    currentPage = 1;
+    updateTable();
+    updateResultsInfo();
+  });
+
+  // Sort functionality
+  document.getElementById('sortSelect').addEventListener('change', function() {
+    const sortOrder = this.value;
+    filteredComplaints.sort((a, b) => {
+      const dateA = new Date(a.dateFiled).getTime();
+      const dateB = new Date(b.dateFiled).getTime();
+      return sortOrder === 'newest' ? dateB - dateA : dateA - dateB;
+    });
+    updateTable();
+  });
+
+  const allArchived = JSON.parse(localStorage.getItem('archivedComplaints') || '[]');
+  const params = new URLSearchParams(window.location.search);
+  const idString = params.get('ids');
+  const idsToShow = idString ? idString.split(',').map(Number) : [];
+
+
+
+
+
+
+  // Update table
+  function updateTable() {
+    const tbody = document.getElementById('complaintsTableBody');
+    const emptyState = document.getElementById('emptyState');
+    const startIndex = (currentPage - 1) * complaintsPerPage;
+    const endIndex = startIndex + complaintsPerPage;
+    const currentComplaints = filteredComplaints.slice(startIndex, endIndex);
+
+    if (currentComplaints.length === 0) {
+      tbody.innerHTML = '';
+      emptyState.style.display = 'block';
+    } else {
+      emptyState.style.display = 'none';
+      tbody.innerHTML = currentComplaints.map(complaint => `
+        <tr onclick="handleComplaintClick(${complaint.id})">
+
+          <!-- Complaint ID with checkbox -->
+          <td onclick="event.stopPropagation();">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <input type="checkbox" class="complaint-checkbox" data-id="${complaint.id}" />
+              2025-${complaint.id.toString().padStart(3, '0')}
+            </div>
+          </td>
+      
+          </td>
+          <td>${complaint.dateFiled}</td>
+          <td>${complaint.complainant}</td>
+          <td>${complaint.respondent}</td>
+          <td>${complaint.type}</td>
+          <td>
+            <span class="status-badge status-${complaint.status.toLowerCase().replace(' ', '')}">
+              <i class="fas ${getStatusIcon(complaint.status)} status-icon"></i>
+              ${complaint.status}
+            </span>
+          </td>
+          <td>
+            <div style="display: flex; align-items: center; gap:">
+              <button class="action-btn" onclick="viewComplaint(${complaint.id})" title="View Details">
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
+          </td>
+      `).join('');
+    }
+    updatePagination();
+  }
+
+  // Get status icon
+  function getStatusIcon(status) {
+    switch (status) {
+      case 'Resolved': return 'fa-check-circle';
+      case 'On Going': return 'fa-clock';
+      case 'Abandoned': return 'fa-trash';
+      case 'Archive': return 'fa-times-circle';        
+      default: return 'fa-exclamation-circle';
+    }
+  }
+
+  // Handle complaint click
+  function handleComplaintClick(id) {
+    viewComplaint(id);
+  }
+
+  // View complaint in modal
+  function viewComplaint(id) {
+    const complaint = complaints.find(c => c.id === id);
+    if (!complaint) return;
+
+    const modalBody = document.getElementById('viewModalBody');
+    modalBody.innerHTML = `
+
+      <div class="current-status">
+        <strong>Current Status:</strong> 
+        <span class="status-badge status-${complaint.status.toLowerCase().replace(' ', '')}">
+          <i class="fas ${getStatusIcon(complaint.status)} status-icon"></i>
+          ${complaint.status}
+        </span>
+      </div>
+
+
+      
+      <div class="complaint-details">
+
+
+
+        <div class="complainant-info">
+          <div class="info-row">
+            <span class="info-label">Date Filed:</span>
+            <span class="info-value">${complaint.dateFiled}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Name:</span>
+            <span class="info-value">${complaint.complainant}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Age:</span>
+            <span class="info-value">${complaint.age}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Gender:</span>
+            <span class="info-value">${complaint.gender}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Address:</span>
+            <span class="info-value">${complaint.address}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Contact:</span>
+            <span class="info-value">${complaint.contact}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Email:</span>
+            <span class="info-value">${complaint.email}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-divider">
+        <h3 class="section-header">
+          <i class="fas fa-exclamation-triangle"></i>
+          Incident Details
+        </h3>
+        <div class="info-row">
+          <span class="info-label">Type of Complaint:</span>
+          <span class="info-value">${complaint.type}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Date and Time:</span>
+          <span class="info-value">${complaint.incidentDate}, ${complaint.incidentTime}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Location:</span>
+          <span class="info-value">${complaint.location}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Respondent:</span>
+          <span class="info-value">${complaint.respondent}</span>
+        </div>
+        <div>
+          <span class="info-label">Description:</span>
+          <textarea class="description-box" readonly>${complaint.description}</textarea>
+        </div>
+        
+        <h4 style="margin-top: 20px; color: #6A7337;">Evidence:</h4>
+        <div class="evidence-gallery">
+          <img src="/placeholder.svg?height=200&width=200" class="evidence-item" alt="Evidence 1">
+          <img src="/placeholder.svg?height=200&width=200" class="evidence-item" alt="Evidence 2">
+          <img src="/placeholder.svg?height=200&width=200" class="evidence-item" alt="Evidence 3">
+        </div>
+      </div>
+
+      <div class="section-divider">
+        <h3 class="section-header">
+          <i class="fas fa-users"></i>
+          Witness Information
+        </h3>
+        <div class="info-row">
+          <span class="info-label">Witness Name:</span>
+          <span class="info-value">${complaint.witnessName || 'N/A'}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Witness Contact:</span>
+          <span class="info-value">${complaint.witnessContact || 'N/A'}</span>
+        </div>
+      </div>
+
+      <div class="section-divider">
+        <h3 class="section-header">
+          <i class="fas fa-calendar-alt"></i>
+          Assignment Details
+        </h3>
+        <div class="info-row">
+          <span class="info-label">Assigned to:</span>
+          <span class="info-value">${complaint.assignedTo}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Appointment:</span>
+          <span class="info-value">${complaint.appointmentDate}</span>
+        </div>
+      </div>
+
+      <div class="status-management">
+        <h3>
+          <i class="fas fa-cogs"></i>
+          Status Management
+        </h3>
+
+        <div class="status-actions">
+          
+          <button class="status-btn btn-resolve" onclick="updateStatus(${complaint.id}, 'Resolved')" 
+                  ${complaint.status === 'Resolved' ? 'disabled' : ''}>
+            <i class="fas fa-check"></i> Mark as Resolved
+          </button>
+          
+          <button class="status-btn btn-ongoing" onclick="updateStatus(${complaint.id}, 'On Going')" 
+                  ${complaint.status === 'On Going' ? 'disabled' : ''}>
+            <i class="fas fa-clock"></i> Mark as On Going
+          </button>
+          
+          <button class="status-btn btn-abandoned" onclick="updateStatus(${complaint.id}, 'Abandoned')"
+                  ${complaint.status === 'Abandoned' ? 'disabled' : ''}>
+            <i class="fas fa-trash"></i> Abandoned Complaint
+          </button>
+
+
+
+        </div>
+      </div>
+    `;
+
+    document.getElementById('viewModal').classList.add('show');
+  }
+
+  // Close view modal
+  function closeViewModal() {
+    document.getElementById('viewModal').classList.remove('show');
+  }
+
+  // Update complaint status
+  function updateStatus(id, newStatus) {
+    const complaint = complaints.find(c => c.id === id);
+    if (complaint) {
+      const oldStatus = complaint.status;
+      complaint.status = newStatus;
+      
+      // Update filtered complaints as well
+      const filteredComplaint = filteredComplaints.find(c => c.id === id);
+      if (filteredComplaint) {
+        filteredComplaint.status = newStatus;
+      }
+      
+      // Show confirmation
+      let actionText = '';
+      switch (newStatus) {
+        case 'Resolved':
+          actionText = 'resolved';
+          break;
+        case 'On Going':
+          actionText = 'marked as on going';
+          break;
+        case 'Archive':
+          actionText = 'archived';
+          break;
+      }
+      
+      alert(`Complaint #${id} has been ${actionText}.\n\nPrevious Status: ${oldStatus}\nNew Status: ${newStatus}`);
+      
+      // Close modal and refresh table
+      closeViewModal();
+      updateTable();
+      updateResultsInfo();
+    }
+  }
+
+  // Update pagination
+  function updatePagination() {
+    const totalPages = Math.ceil(filteredComplaints.length / complaintsPerPage);
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const pageInfo = document.getElementById('pageInfo');
+
+    pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+    prevBtn.disabled = currentPage === 1;
+    nextBtn.disabled = currentPage === totalPages || totalPages === 0;
+
+    // Show/hide pagination
+    const pagination = document.getElementById('pagination');
+    pagination.style.display = totalPages <= 1 ? 'none' : 'flex';
+  }
+
+  // Change page
+  function changePage(direction) {
+    const totalPages = Math.ceil(filteredComplaints.length / complaintsPerPage);
+    const newPage = currentPage + direction;
+    
+    if (newPage >= 1 && newPage <= totalPages) {
+      currentPage = newPage;
+      updateTable();
+      updateResultsInfo();
+    }
+  }
+
+  // Update results info
+  function updateResultsInfo() {
+    const resultsInfo = document.getElementById('resultsInfo');
+    const startIndex = (currentPage - 1) * complaintsPerPage;
+    const endIndex = Math.min(startIndex + complaintsPerPage, filteredComplaints.length);
+    
+    if (filteredComplaints.length === 0) {
+      resultsInfo.textContent = 'No complaints found';
+    } else {
+      resultsInfo.textContent = `Showing ${startIndex + 1}-${endIndex} of ${filteredComplaints.length} complaints`;
+    }
+  }
+
+  // Toggle notifications
+  function toggleNotifications() {
+    const popup = document.getElementById('notifPopup');
+    const dropdown = document.getElementById('dropdownMenu');
+    
+    dropdown.classList.remove('show');
+    popup.classList.toggle('show');
+  }
+
+  // Close notifications
+  function closeNotifications() {
+    document.getElementById('notifPopup').classList.remove('show');
+  }
+
+  // Toggle dropdown
+  function toggleDropdown() {
+    const dropdown = document.getElementById('dropdownMenu');
+    const popup = document.getElementById('notifPopup');
+    
+    popup.classList.remove('show');
+    dropdown.classList.toggle('show');
+  }
+
+  // Close dropdown
+  function closeDropdown() {
+    document.getElementById('dropdownMenu').classList.remove('show');
+  }
+
+  // Logout function
+  function logout() {
+    alert('Logging out...');
+    // Add logout logic here
+  }
+
+  // Close dropdowns when clicking outside
+  document.addEventListener('click', function(event) {
+    const dropdown = document.getElementById('dropdownMenu');
+    const popup = document.getElementById('notifPopup');
+    const viewModal = document.getElementById('viewModal');
+    const profileBtn = event.target.closest('.profile-btn');
+    const notifBtn = event.target.closest('.notification-btn');
+    const popupContent = event.target.closest('.notification-popup');
+
+    if (!profileBtn && !event.target.closest('.dropdown-menu')) {
+      dropdown.classList.remove('show');
+    }
+
+    if (!notifBtn && !popupContent) {
+      popup.classList.remove('show');
+    }
+
+    // Close view modal when clicking outside
+    if (event.target === viewModal) {
+      closeViewModal();
+    }
+  });
+
+  // Keyboard shortcuts
+  document.addEventListener('keydown', function(event) {
+    // Escape key closes modals and dropdowns
+    if (event.key === 'Escape') {
+      closeViewModal();
+      closeNotifications();
+      closeDropdown();
+    }
+    
+    // Ctrl/Cmd + K focuses search
+    if ((event.ctrlKey || event.metaKey) && event.key === 'k') {
+      event.preventDefault();
+      document.getElementById('searchInput').focus();
+    }
+  });
+
+
+
+
+  window.onclick = function (event) {
+    if (!event.target.closest('.profile-container')) {
+      const dropdown = document.getElementById('dropdownMenu');
+      if (dropdown) dropdown.style.display = 'none';
+    }
+  };
+
+  function scrollToTop(event) {
+    event.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }    
+
+
+  function openNotifFromDropdown(event) {
+    event.preventDefault();
+    document.getElementById('dropdownMenu').style.display = 'none'; // close dropdown
+    document.getElementById('notifPopup').style.display = 'flex'; // open notif
+  }
+
+  function closeNotifPopup() {
+    document.getElementById('notifPopup').style.display = 'none';
+  }
+
+  // Close everything on outside click
+  window.onclick = function (e) {
+    if (!e.target.closest('.profile-container') && !e.target.closest('.notification-popup')) {
+      document.getElementById('dropdownMenu').style.display = 'none';
+      closeNotifPopup();
+    }
+  }
+
+
+  
+  searchInput.addEventListener('input', () => {
+    currentPage = 1;
+    updateTable();
+  });
+
+  sortSelect.addEventListener('change', () => {
+    updateTable();
+  });
+
+  function toggleDropdown() {
+    const menu = document.getElementById('dropdownMenu');
+    menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+  }
+
+  window.onclick = function (event) {
+    if (!event.target.closest('.profile-container')) {
+      const dropdown = document.getElementById('dropdownMenu');
+      if (dropdown) dropdown.style.display = 'none';
+    }
+  };
+
+  function scrollToTop(event) {
+    event.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }    
+
+  function toggleDropdown() {
+    const dropdown = document.getElementById('dropdownMenu');
+    const notif = document.getElementById('notifPopup');
+    notif.style.display = 'none'; // hide notif popup
+    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+  }
+
+  function openNotifFromDropdown(event) {
+    event.preventDefault();
+    document.getElementById('dropdownMenu').style.display = 'none'; // close dropdown
+    document.getElementById('notifPopup').style.display = 'flex'; // open notif
+  }
+
+  function closeNotifPopup() {
+    document.getElementById('notifPopup').style.display = 'none';
+  }
+
+  // Close everything on outside click
+  window.onclick = function (e) {
+    if (!e.target.closest('.profile-container') && !e.target.closest('.notification-popup')) {
+      document.getElementById('dropdownMenu').style.display = 'none';
+      closeNotifPopup();
+    }
+  }
+
+  /*TERMS AND CONDITION*/
+  function openTerms(event) {
+    event.preventDefault();
+    document.getElementById('termsModal').style.display = 'flex';
+  }
+
+  function closeTerms() {
+    document.getElementById('termsModal').style.display = 'none';
+  }
+
+  // Open modal
+  function openModal() {
+    document.getElementById("termsModal").style.display = "block";
+  }
+
+  // Close modal
+  function closeModal() {
+    document.getElementById("termsModal").style.display = "none";
+  }
+
+  // ==========================
+  // NOTIFICATION FUNCTIONALITY
+  // ==========================
+
+  function openNotifFromDropdown(event) {
+    event.preventDefault();
+    document.getElementById('dropdownMenu').style.display = 'none';
+    document.getElementById('notifPopup').style.display = 'flex';
+  }
+
+  function toggleDropdown() {
+    const dropdown = document.getElementById('dropdownMenu');
+    const notif = document.getElementById('notifPopup');
+    notif.style.display = 'none';
+    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+  }
+
+  function closeNotifPopup() {
+    document.getElementById('notifPopup').style.display = 'none';
+  }
+
+  function scrollToTop(event) {
+    event.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }
+
+  // Modal functionality (Terms & Conditions)
+  function openModal() {
+    document.getElementById("termsModal").style.display = "block";
+  }
+
+  function closeModal() {
+    document.getElementById("termsModal").style.display = "none";
+  }
+
+  // Close modal or dropdown when clicking outside
+  window.onclick = function (event) {
+    const modal = document.getElementById("termsModal");
+    if (event.target == modal) {
+      closeModal();
+    }
+
+    if (!event.target.closest('.profile-container') && !event.target.closest('.notification-popup')) {
+      document.getElementById('dropdownMenu').style.display = 'none';
+      closeNotifPopup();
+    }
+  }
+  
+  function confirmLogout() {
+    document.getElementById('logoutModal').style.display = 'flex';
+    return false; // Prevent the <a> tag from redirecting
+  }
+
+  function closeLogoutModal() {
+    document.getElementById('logoutModal').style.display = 'none';
+  }
+
+  function confirmLogoutAction() {
+    window.location.href = "staffLogin.html"; // ✅ your original destination
+  };
+
+  function toggleMobileMenu(menu) {
+    menu.classList.toggle("open"); // toggles hamburger animation
+    document.querySelector(".mobile-menu").classList.toggle("open"); // toggles mobile menu display
+  }
+  function toggleDropdown() {
+    const menu = document.getElementById("dropdownMenu");
+    menu.style.display = menu.style.display === "block" ? "none" : "block";
+  }
+
+  // highlighted nav
+
+  document.addEventListener('DOMContentLoaded', function() {
+  const currentUrl = window.location.href;
+  const navLinks = document.querySelectorAll('.nav-list a');
+
+  navLinks.forEach(link => {
+    if (currentUrl.includes(link.getAttribute('href'))) {
+      link.classList.add('active');
+      }
+    });
+  });
+
+  //ARCHIVE BUTTON
+  function archiveSelectedComplaints() {
+    const checkboxes = document.querySelectorAll('.complaint-checkbox:checked');
+    const selectedIds = Array.from(checkboxes).map(cb => cb.getAttribute('data-id'));
+
+    if (selectedIds.length === 0) {
+      alert("Please select at least one complaint to archive.");
+      return;
+    }
+
+    // Get current data from localStorage
+    let complaints = JSON.parse(localStorage.getItem('complaints') || '[]');
+    let archived = JSON.parse(localStorage.getItem('archivedComplaints') || '[]');
+
+    selectedIds.forEach(id => {
+      const complaint = complaints.find(c => String(c.id) === id);
+      if (complaint && !archived.some(ac => ac.id === complaint.id)) {
+        archived.push(complaint);
+      }
+    });
+
+    // Remove archived complaints from active
+    complaints = complaints.filter(c => !selectedIds.includes(String(c.id)));
+
+    // Save updated lists
+    localStorage.setItem('archivedComplaints', JSON.stringify(archived));
+    localStorage.setItem('complaints', JSON.stringify(complaints));
+
+    alert("Selected complaints have been archived.");
+    location.reload();
+  }
+
+
+
+  </script>
+</body>
+
+</html>

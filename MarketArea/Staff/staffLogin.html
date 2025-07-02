@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Market Area E-Blotter Portal</title>
+  <link rel="icon" type="image/png" href="files/logo.png">
+  <link rel="stylesheet" href="TAC.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: "Trebuchet MS", sans-serif;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .main-container {
+      display: flex;
+      flex-wrap: wrap;
+      min-height: 100vh;
+    }
+
+    .left-side {
+      width: 73%;
+      flex-grow: 1;
+      flex-basis: 200px;
+
+    }
+
+    .right-side {
+      width: 27%;
+      max-width: 600px;
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 20px;
+      animation: fadeIn 1s ease-in;
+      background-image: url('files/bg.png'); 
+      box-sizing: border-box;    
+      max-height: 100vh;
+      overflow: hidden;
+    }
+
+    .left-side img {
+      width: 100%;
+      height: 100vh;
+      object-fit: cover;
+      background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    .right-side img {
+      width: 190px;
+      padding-bottom: 5%;
+      margin-top: 5px;
+      animation: slideDown 1s ease;
+    }
+
+    .right-side h1 {
+      font-size: 20px;
+      margin-bottom: 30px;
+      align-items: center;
+      text-align: center;
+    }
+
+    .right-side h3 {
+      font-size: 15px;
+      margin: 0;
+      color: black;
+    }
+
+    .email-input-box,
+    .password-input-box {
+      width: 230px;
+      font-size: 15px;
+      padding: 15px 22px;
+      border: 2px solid #ccc;
+      border-radius: 20px;
+      margin-top: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .email-input-box:focus,
+    .password-input-box:focus {
+      border-color: #4B5320;
+      box-shadow: 0 0 8px rgba(75, 83, 32, 0.5);
+      outline: none;
+    }
+
+    .button1 {
+      margin-top: 20px;
+      display: inline-block;
+      width: 240px;
+      padding: 13px 18px;
+      border-radius: 20px;
+      font-size: 20px;
+      text-decoration: none;
+      text-align: center;
+      box-shadow: 0 8px 8px rgba(0, 0, 0, 0.5);
+      cursor: pointer;
+      color: white;
+      font-weight: bold;
+      background-color: #4B5320;
+      transition: background 0.3s ease, transform 0.2s ease;
+      animation: popIn 0.8s ease;
+    }
+
+    .button1:hover {
+      background-color: #3b4218;
+      transform: translateY(-2px);
+    }
+
+    .email-input-box,
+    .password-input-box,
+    .button1 {
+      width: 90%;
+      max-width: 260px;
+    }
+
+    
+    .regis1, .forgot-password-link {
+      font-size: 14px;
+      text-decoration: none;
+      color: #4B5320;
+    }
+
+    .regis1:hover, .forgot-password-link:hover {
+      text-decoration: underline;
+    }
+
+    .below {
+      text-align: center;
+      font-size: 13px;
+      margin-top: 90px;
+    }
+
+    .below a {
+      text-decoration: none;
+    }
+    .auth-links {
+      text-align: center;
+      margin-top: 25px;
+    }
+
+    .auth-links .forgot-password-link {
+      display: block;
+      margin-bottom: 10px;
+      color: #4B5320;
+      font-size: 14px;
+      text-decoration: none;
+    }
+
+    .auth-links .forgot-password-link:hover {
+      text-decoration: underline;
+    }
+
+    .auth-links .regis {
+      font-size: 14px;
+      color: #333;
+    }
+
+    .auth-links .regis1 {
+      margin-left: 5px;
+      color: #4B5320;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .auth-links .regis1:hover {
+      text-decoration: underline;
+    }
+
+    /* Animations */
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .main-container {
+        flex-direction: column;
+        height: auto;
+      }
+
+      .modal-box {
+        width: 90vw;
+        height: 80vh;
+      }
+
+      .left-side {
+        display: none;
+      }
+
+      .right-side {
+        width: 100%;
+        height: auto;
+        padding: 40px 20px;
+      }
+
+      .email-input-box,
+      .password-input-box,
+      .button1 {
+        width: 90%;
+      }
+    }
+
+    .login-popup {
+      position: fixed;
+      top: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 12px 20px;
+      background-color: #D9534F;
+      color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      display: none;
+      z-index: 1000;
+      animation: slideFadeIn 0.4s ease;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    @keyframes slideFadeIn {
+      from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="main-container">
+
+    <div class="left-side">
+      <img src="files/marketareabg1.jpg" alt="Arch Image">
+    </div>
+
+    <div class="right-side">
+      <img src="files/logo.png" alt="Barangay Logo">
+      <h1>Welcome To Barangay Market Area: <br>E-Blotter System</h1>
+      <h3>Log In to your employee account</h3>
+
+      <input type="text" class="email-input-box" placeholder="Enter your ID Number">
+      <input type="password" class="password-input-box" placeholder="Enter your password">
+
+      <a href="#" class="button1" title="Staff Homepage" onclick="validateLogin(event)">Log In</a>
+
+      <div class="auth-links">
+        <a href="forgot_pass.html" class="forgot-password-link">Forgot Password?</a>
+
+      </div>
+
+     
+  <div id="loginPopup" class="login-popup"></div>
+
+  <script>
+    function openModal() {
+      document.getElementById('modalOverlay').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('modalOverlay').style.display = 'none';
+    }
+
+    function showLoginPopup(message) {
+      const popup = document.getElementById('loginPopup');
+      popup.innerText = message;
+      popup.style.display = 'block';
+
+      setTimeout(() => {
+        popup.style.display = 'none';
+      }, 3000);
+    }
+
+    function validateLogin(event) {
+      event.preventDefault();
+
+      const idInput = document.querySelector('.email-input-box');
+      const passwordInput = document.querySelector('.password-input-box');
+
+      const idNumber = idInput.value.trim();
+      const password = passwordInput.value.trim();
+
+      // Example ID number pattern: digits only, minimum 5 digits
+      const idPattern = /^\d{5,}$/;
+
+      if (idNumber === "") {
+        showLoginPopup("Please enter your ID Number.");
+        return false;
+      }
+
+      if (!idPattern.test(idNumber)) {
+        showLoginPopup("Invalid ID Number. It should be at least 5 digits.");
+        return false;
+      }
+
+      if (password === "") {
+        showLoginPopup("Please enter your password.");
+        return false;
+      }
+
+      // Proceed to homepage if both are valid
+      window.location.href = "staffHomepage.html";
+    }
+  </script>
+
+</body>
+</html>
